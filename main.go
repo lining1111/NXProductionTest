@@ -16,7 +16,9 @@ typedef struct {
 */
 import "C"
 import (
+	"NXProductionTest/broadcast"
 	"NXProductionTest/server"
+	"sync"
 )
 
 func main() {
@@ -58,7 +60,21 @@ func main() {
 	//sn := binary.LittleEndian.Uint16(buf16)
 	//fmt.Println(sn)
 
-	var s = server.Server{}
-	s.Run(10000)
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		var s = server.Server{}
+		s.Run(10000)
+	}()
 
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+
+		//TODO获取ip
+		broadcast.BroadCast("hello")
+	}()
+
+	wg.Wait()
 }

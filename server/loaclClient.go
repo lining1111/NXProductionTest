@@ -2,6 +2,7 @@ package server
 
 import "C"
 import (
+	"NXProductionTest/common"
 	"encoding/binary"
 	"fmt"
 	"github.com/smallnest/ringbuffer"
@@ -31,9 +32,9 @@ var (
 )
 
 type Pkg struct {
-	Head Head
+	Head common.Head
 	Body string
-	Crc  Crc
+	Crc  common.Crc
 }
 
 type LocalClient struct {
@@ -102,7 +103,7 @@ func (c *LocalClient) getPkg() {
 
 		case GetHeadStart:
 			{
-				if c.rb.Length() >= (HeadLen - int(unsafe.Sizeof(c.tmpPkg.Head.Tag))) {
+				if c.rb.Length() >= (common.HeadLen - int(unsafe.Sizeof(c.tmpPkg.Head.Tag))) {
 					//version
 					version, _ := c.rb.ReadByte()
 					c.tmpPkg.Head.Version = version
@@ -128,7 +129,7 @@ func (c *LocalClient) getPkg() {
 			}
 		case GetHead:
 			{
-				bodySize := int(c.tmpPkg.Head.Len - uint32(HeadLen+CRCLen))
+				bodySize := int(c.tmpPkg.Head.Len - uint32(common.HeadLen+common.CRCLen))
 				if c.rb.Length() >= bodySize {
 					//拷贝body
 					body := make([]byte, bodySize)
@@ -139,7 +140,7 @@ func (c *LocalClient) getPkg() {
 			}
 		case GetBody:
 			{
-				if c.rb.Length() >= CRCLen {
+				if c.rb.Length() >= common.CRCLen {
 					buf16 := make([]byte, 2)
 					c.rb.Read(buf16)
 					c.tmpPkg.Crc.Data = binary.LittleEndian.Uint16(buf16)
@@ -165,9 +166,9 @@ func (c *LocalClient) getContent() {
 		pkg, ok := <-c.pkgs
 		if ok {
 			switch pkg.Head.Cmd {
-			case uint8(Cmd1):
+			case uint8(common.Cmd1):
 				fmt.Println(pkg.Body)
-			case uint8(Cmd2):
+			case uint8(common.Cmd2):
 				fmt.Println(pkg.Body)
 			default:
 				fmt.Printf("unknown cmd:%d,body:%s\n", pkg.Head.Cmd, pkg.Body)
