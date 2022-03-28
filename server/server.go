@@ -4,25 +4,27 @@ import (
 	"fmt"
 	"net"
 	"strconv"
+	"time"
 )
 
 type Server struct {
-	localClients map[net.Conn]LocalClient //客户端数组
-	Port         int16                    //服务端端口
+	localClients map[net.Conn]*LocalClient //客户端数组
+	Port         int16                     //服务端端口
+	run          bool
 }
 
-func (s *Server) AddClient(c LocalClient) {
+func (s *Server) AddClient(c *LocalClient) {
 	s.localClients[c.conn] = c
 }
 
-func (s *Server) RemoveClient(c LocalClient) {
+func (s *Server) RemoveClient(c *LocalClient) {
 	_, v := s.localClients[c.conn]
 	if v {
 		delete(s.localClients, c.conn)
 	}
 }
 
-func (s *Server) handlerClient(c LocalClient) {
+func (s *Server) handlerClient(c *LocalClient) {
 	clientAddr := c.conn.RemoteAddr().String()
 	fmt.Printf("client:%s connect\n", clientAddr)
 	c.Process()
@@ -43,17 +45,26 @@ func (s *Server) Run(port int16) error {
 	}
 
 	fmt.Println("server start success at port:", port)
-	s.localClients = make(map[net.Conn]LocalClient)
+	s.run = true
+	s.localClients = make(map[net.Conn]*LocalClient)
+	go s.Monitor()
 	for {
 		conn, errAccept := listener.Accept()
 		if errAccept != nil {
 			continue
 		}
-		c := LocalClient{}
+		c := new(LocalClient)
 		c.New(conn, tmpSize, rbSize)
 		s.AddClient(c)
 		go s.handlerClient(c)
+	}
 
+	return nil
+}
+
+func (s *Server) Monitor() {
+	for s.run {
+		time.Sleep(time.Duration(10) * time.Millisecond)
 		for _, localClient := range s.localClients {
 			if !localClient.run {
 				fmt.Println("关闭客户端", localClient.conn.RemoteAddr().String())
@@ -62,6 +73,4 @@ func (s *Server) Run(port int16) error {
 			}
 		}
 	}
-
-	return nil
 }

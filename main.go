@@ -17,11 +17,9 @@ typedef struct {
 import "C"
 import (
 	"NXProductionTest/server"
-	"fmt"
 )
 
 func main() {
-	fmt.Println("hello")
 
 	//queue := dstr.Queue{}
 	//queue.Init()
@@ -62,6 +60,5 @@ func main() {
 
 	var s = server.Server{}
 	s.Run(10000)
-
 
 }

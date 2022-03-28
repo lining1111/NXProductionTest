@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/smallnest/ringbuffer"
 	"net"
+	"time"
 	"unsafe"
 )
 
@@ -66,25 +67,28 @@ func (c *LocalClient) Close() {
 
 //把读取的字节存入缓存中
 func (c *LocalClient) dump() {
-	fmt.Println("dump run")
+	fmt.Println("client", c.conn.RemoteAddr(), "dump run")
 	for c.run {
+		time.Sleep(time.Duration(10) * time.Millisecond)
 		var err error
 		c.tmpLen, err = c.conn.Read(c.tmpBuf)
 		if err != nil {
-			fmt.Printf("client%s read err:%s", c.conn.RemoteAddr().String(), err.Error())
+			fmt.Printf("client%s read err:%s\n", c.conn.RemoteAddr().String(), err.Error())
 			c.run = false
+			continue
 		}
 		//存入缓存
 		c.rb.Write(c.tmpBuf[:c.tmpLen])
 		fmt.Println("rb size read", c.rb.Length())
 	}
-	fmt.Println("dump exit")
+	fmt.Println("client", c.conn.RemoteAddr(), "dump exit")
 }
 
 // 从缓存中获取
 func (c *LocalClient) getPkg() {
-	fmt.Println("getPkg run")
+	fmt.Println("client", c.conn.RemoteAddr(), "getPkg run")
 	for c.run {
+		time.Sleep(time.Duration(10) * time.Millisecond)
 		switch c.status {
 		case Start:
 			{
@@ -151,12 +155,13 @@ func (c *LocalClient) getPkg() {
 
 		}
 	}
-	fmt.Println("getPkg exit")
+	fmt.Println("client", c.conn.RemoteAddr(), "getPkg exit")
 }
 
 func (c *LocalClient) getContent() {
-	fmt.Println("getContent run")
+	fmt.Println("client", c.conn.RemoteAddr(), "getContent run")
 	for c.run {
+		time.Sleep(time.Duration(10) * time.Millisecond)
 		pkg, ok := <-c.pkgs
 		if ok {
 			switch pkg.Head.Cmd {
@@ -169,12 +174,11 @@ func (c *LocalClient) getContent() {
 			}
 		}
 	}
-	fmt.Println("getContent run")
+	fmt.Println("client", c.conn.RemoteAddr(), "getContent exit")
 }
 
 //主处理流程
 func (c *LocalClient) Process() {
-	fmt.Println("client process")
 	if c.run {
 		go c.dump()
 		go c.getPkg()
