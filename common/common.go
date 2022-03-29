@@ -3,6 +3,8 @@ package common
 import (
 	"NXProductionTest/fileType"
 	"archive/zip"
+	"bufio"
+	"bytes"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -47,26 +49,182 @@ type Eth struct {
 	GateWay string `json:"gateWay"`
 }
 
+type Eoc struct {
+	Ip   string `json:"ip"`
+	Port string `json:"port"`
+}
+
+type Net struct {
+	Eth0     Eth    `json:"eth0"`
+	Eth1     Eth    `json:"eth1"`
+	MainDNS  string `json:"mainDNS"`
+	SlaveDNS string `json:"slaveDNS"`
+	Eoc      Eoc    `json:"eoc"`
+	City     string `json:"city"`
+}
+
 type NTP struct {
 	Ip   string `json:"ip"`
 	Port string `json:"port"`
 }
 
-// ModifyLocalNet ModifyLocalIp 修改ip
-func ModifyLocalNet(eth Eth) error {
-	//eth0_type := eth.Type
-	//eth0_ip := eth.Ip
-	//eth0_mask := eth.Mask
-	//eth0_gateWay := eth.GateWay
+// ModifyLocalNet 修改net
+func ModifyLocalNet(net Net) error {
+	//1.获取参数
+	eth0_type := net.Eth0.Type
+	eth0_ip := net.Eth0.Ip
+	eth0_mask := net.Eth0.Mask
+	eth0_gateWay := net.Eth0.GateWay
+
+	eth1_type := net.Eth1.Type
+	eth1_ip := net.Eth1.Ip
+	eth1_mask := net.Eth1.Mask
+	eth1_gateWay := net.Eth1.GateWay
+
+	mainDNS := net.MainDNS
+	slaveDNS := net.SlaveDNS
+
+	eocCloudIp := net.Eoc.Ip
+	eocCloudPort := net.Eoc.Port
+
+	city := net.City
+
+	//1.执行shell指令
+	shell := "/home/nvidianx/bin/set_nx_net_info " +
+		eth0_type + " " + eth0_ip + " " + eth0_mask + " " + " " + eth0_gateWay + " " +
+		eth1_type + " " + eth1_ip + " " + eth1_mask + " " + " " + eth1_gateWay + " " +
+		mainDNS + " " + slaveDNS + " " + eocCloudIp + " " + eocCloudPort + " " + city
+	cmd := exec.Command("/bin/bash", "-c", shell)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		return err
+	}
 
 	return nil
 }
 
-// GetIp 返回ip
-func GetLocalNet() Eth {
-	var eth Eth
+// GetLocalNet 返回net
+func GetLocalNet() (Net, error) {
+	var net Net
 
-	return eth
+	//1.执行shell指令
+	shell := "/home/nvidianx/bin/get_nx_net_info"
+	cmd := exec.Command("/bin/bash", "-c", shell)
+	result, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		return Net{}, err
+	}
+	/*
+		"* get_double_net_info $ip_type $curip $curmask $curgateway $eth1_ip_type $eth1_curip $eth1_curmask $eth1_curgateway $curmaindns $curslavedns $curcloudip $curcloudport $curdevicenum $cur_city $cur_mac $protocol_version *"
+	*/
+	//2.从结果中获取配置
+	//从结果中获取含有get_double_net_info的那一行 按空格分开为 ip_type curip curmask curgateway eth1_ip_type eth1_curip eth1_curmask eth1_curgateway curmaindns curslavedns curcloudip curcloudport curdevicenum cur_city cur_mac protocol_version
+	rd := bufio.NewReader(bytes.NewReader(result))
+	var contents []string
+	isFind := false
+	for !isFind {
+		line, _, err1 := rd.ReadLine()
+		if err1 == io.EOF {
+			isFind = false
+			break
+		}
+		str := string(line)
+		if strings.Index(str, "get_double_net_info") >= 0 {
+			copy(contents, strings.Split(str, " "))
+			isFind = true
+			break
+		}
+	}
+	if isFind {
+		if len(contents) >= 17 {
+			net.Eth0.Type = contents[1]
+			net.Eth0.Ip = contents[2]
+			net.Eth0.Mask = contents[3]
+			net.Eth0.GateWay = contents[4]
+
+			net.Eth1.Type = contents[5]
+			net.Eth1.Ip = contents[6]
+			net.Eth1.Mask = contents[7]
+			net.Eth1.GateWay = contents[8]
+
+			net.MainDNS = contents[9]
+			net.SlaveDNS = contents[10]
+
+			net.Eoc.Ip = contents[11]
+			net.Eoc.Port = contents[12]
+
+			//deviceNum contents[13]
+			net.City = contents[14]
+			//curMac contents[15]
+			//protocol_version contents[16]
+		}
+	}
+
+	return net, nil
+}
+
+// SetNtp 设置ntp配置
+func SetNtp(ntp NTP) error {
+
+	//2.2获取NTP服务器的ip port
+	ip := ntp.Ip
+	port := ntp.Port
+
+	//2.3设置NTP服务器
+	shell := "/home/nvidianx/bin/set_ntp_info " + ip + " " + port
+	cmd := exec.Command("/bin/bash", "-c", shell)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// GetNtp 返回ntp配置
+func GetNtp() (NTP, error) {
+	var ntp NTP
+
+	//1.执行shell指令
+	shell := "/home/nvidianx/bin/get_ntp_info"
+	cmd := exec.Command("/bin/bash", "-c", shell)
+	result, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		return NTP{}, err
+	}
+	/*
+		"* get_ntp_info $ntpServer 123  *"
+	*/
+	//2.从结果中获取配置
+	//从结果中获取含有get_ntp_info的那一行 按空格分开为 ntpIP ntpPort
+	rd := bufio.NewReader(bytes.NewReader(result))
+	var contents []string
+	isFind := false
+	for !isFind {
+		line, _, err1 := rd.ReadLine()
+		if err1 == io.EOF {
+			isFind = false
+			break
+		}
+		str := string(line)
+		if strings.Index(str, "get_ntp_info") >= 0 {
+			copy(contents, strings.Split(str, " "))
+			isFind = true
+			break
+		}
+	}
+	if isFind {
+		if len(contents) >= 3 {
+			ntp.Ip = contents[1]
+			ntp.Port = contents[2]
+		}
+	}
+
+	return ntp, nil
 }
 
 // UpDate 固件升级
@@ -132,30 +290,4 @@ func UpDate(name string, file []byte) error {
 	}
 
 	return nil
-}
-
-// SetNtp 设置ntp配置
-func SetNtp(ntp NTP) error {
-
-	//2.2获取NTP服务器的ip port
-	ip := ntp.Ip
-	port := ntp.Port
-
-	//2.3设置NTP服务器
-	shell := "/home/nvidianx/bin/set_ntp_info " + ip + " " + port
-	cmd := exec.Command("/bin/bash", "-c", shell)
-	err := cmd.Run()
-	if err != nil {
-		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
-		return err
-	}
-
-	return nil
-}
-
-// GetNtp 返回ntp配置
-func GetNtp() NTP {
-	var ntp NTP
-
-	return ntp
 }
