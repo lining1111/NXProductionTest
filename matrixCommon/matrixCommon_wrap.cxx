@@ -245,11 +245,32 @@ static void* Swig_malloc(int c) {
 
 #include <stdint.h>		// Use the C99 official header
 
+
+#include <vector>
+#include <stdexcept>
+
+
+#include <string>
+
+SWIGINTERN std::vector< unsigned char >::const_reference std_vector_Sl_uint8_t_Sg__get(std::vector< uint8_t > *self,int i){
+                int size = int(self->size());
+                if (i>=0 && i<size)
+                    return (*self)[i];
+                else
+                    throw std::out_of_range("vector index out of range");
+            }
+SWIGINTERN void std_vector_Sl_uint8_t_Sg__set(std::vector< uint8_t > *self,int i,std::vector< unsigned char >::value_type const &val){
+                int size = int(self->size());
+                if (i>=0 && i<size)
+                    (*self)[i] = val;
+                else
+                    throw std::out_of_range("vector index out of range");
+            }
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void _wrap_Swig_free_matrixCommon_086ff6444b79a7ba(void *_swig_go_0) {
+void _wrap_Swig_free_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -259,7 +280,7 @@ void _wrap_Swig_free_matrixCommon_086ff6444b79a7ba(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_matrixCommon_086ff6444b79a7ba(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_matrixCommon_3aecc8aaebb3a2cf(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -272,7 +293,168 @@ void *_wrap_Swig_malloc_matrixCommon_086ff6444b79a7ba(intgo _swig_go_0) {
 }
 
 
-intgo _wrap_Heart_matrixCommon_086ff6444b79a7ba() {
+std::vector< unsigned char > *_wrap_new_Uint8Vector__SWIG_0_matrixCommon_3aecc8aaebb3a2cf() {
+  std::vector< uint8_t > *result = 0 ;
+  std::vector< unsigned char > *_swig_go_result;
+  
+  
+  result = (std::vector< uint8_t > *)new std::vector< uint8_t >();
+  *(std::vector< uint8_t > **)&_swig_go_result = (std::vector< uint8_t > *)result; 
+  return _swig_go_result;
+}
+
+
+std::vector< unsigned char > *_wrap_new_Uint8Vector__SWIG_1_matrixCommon_3aecc8aaebb3a2cf(long long _swig_go_0) {
+  std::vector< unsigned char >::size_type arg1 ;
+  std::vector< uint8_t > *result = 0 ;
+  std::vector< unsigned char > *_swig_go_result;
+  
+  arg1 = (size_t)_swig_go_0; 
+  
+  result = (std::vector< uint8_t > *)new std::vector< uint8_t >(arg1);
+  *(std::vector< uint8_t > **)&_swig_go_result = (std::vector< uint8_t > *)result; 
+  return _swig_go_result;
+}
+
+
+std::vector< unsigned char > *_wrap_new_Uint8Vector__SWIG_2_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = 0 ;
+  std::vector< uint8_t > *result = 0 ;
+  std::vector< unsigned char > *_swig_go_result;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  result = (std::vector< uint8_t > *)new std::vector< uint8_t >((std::vector< uint8_t > const &)*arg1);
+  *(std::vector< uint8_t > **)&_swig_go_result = (std::vector< uint8_t > *)result; 
+  return _swig_go_result;
+}
+
+
+long long _wrap_Uint8Vector_size_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  std::vector< unsigned char >::size_type result;
+  long long _swig_go_result;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  result = ((std::vector< uint8_t > const *)arg1)->size();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+long long _wrap_Uint8Vector_capacity_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  std::vector< unsigned char >::size_type result;
+  long long _swig_go_result;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  result = ((std::vector< uint8_t > const *)arg1)->capacity();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_Uint8Vector_reserve_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0, long long _swig_go_1) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  std::vector< unsigned char >::size_type arg2 ;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  arg2 = (size_t)_swig_go_1; 
+  
+  (arg1)->reserve(arg2);
+  
+}
+
+
+bool _wrap_Uint8Vector_isEmpty_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  bool result;
+  bool _swig_go_result;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  result = (bool)((std::vector< uint8_t > const *)arg1)->empty();
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_Uint8Vector_clear_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  (arg1)->clear();
+  
+}
+
+
+void _wrap_Uint8Vector_add_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0, char _swig_go_1) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  std::vector< unsigned char >::value_type *arg2 = 0 ;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  arg2 = (std::vector< unsigned char >::value_type *)&_swig_go_1; 
+  
+  (arg1)->push_back((std::vector< unsigned char >::value_type const &)*arg2);
+  
+}
+
+
+char _wrap_Uint8Vector_get_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0, intgo _swig_go_1) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  int arg2 ;
+  std::vector< unsigned char >::value_type *result = 0 ;
+  char _swig_go_result;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  
+  try {
+    result = (std::vector< unsigned char >::value_type *) &std_vector_Sl_uint8_t_Sg__get(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    (void)_e;
+    _swig_gopanic("C++ std::out_of_range exception thrown");
+    
+  }
+  _swig_go_result = (unsigned char)*result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_Uint8Vector_set_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0, intgo _swig_go_1, char _swig_go_2) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  int arg2 ;
+  std::vector< unsigned char >::value_type *arg3 = 0 ;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  arg2 = (int)_swig_go_1; 
+  arg3 = (std::vector< unsigned char >::value_type *)&_swig_go_2; 
+  
+  try {
+    std_vector_Sl_uint8_t_Sg__set(arg1,arg2,(unsigned char const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    (void)_e;
+    _swig_gopanic("C++ std::out_of_range exception thrown");
+    
+  }
+  
+}
+
+
+void _wrap_delete_Uint8Vector_matrixCommon_3aecc8aaebb3a2cf(std::vector< unsigned char > *_swig_go_0) {
+  std::vector< uint8_t > *arg1 = (std::vector< uint8_t > *) 0 ;
+  
+  arg1 = *(std::vector< uint8_t > **)&_swig_go_0; 
+  
+  delete arg1;
+  
+}
+
+
+intgo _wrap_Heart_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -284,7 +466,7 @@ intgo _wrap_Heart_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetSwitch_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetSwitch_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -296,7 +478,7 @@ intgo _wrap_Req_SetSwitch_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetFun_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetFun_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -308,7 +490,7 @@ intgo _wrap_Req_SetFun_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetFun_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetFun_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -320,7 +502,7 @@ intgo _wrap_Rsp_SetFun_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetIp_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetIp_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -332,7 +514,7 @@ intgo _wrap_Req_SetIp_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetIp_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetIp_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -344,7 +526,7 @@ intgo _wrap_Rsp_SetIp_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetNet_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetNet_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -356,7 +538,7 @@ intgo _wrap_Req_SetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetNet_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetNet_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -368,7 +550,7 @@ intgo _wrap_Rsp_SetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetSn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetSn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -380,7 +562,7 @@ intgo _wrap_Req_SetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetSn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetSn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -392,7 +574,7 @@ intgo _wrap_Rsp_SetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_GetNetSn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_GetNetSn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -404,7 +586,7 @@ intgo _wrap_Req_GetNetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_GetNetSn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -416,7 +598,7 @@ intgo _wrap_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_GetNet_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_GetNet_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -428,7 +610,7 @@ intgo _wrap_Req_GetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_GetNet_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_GetNet_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -440,7 +622,7 @@ intgo _wrap_Rsp_GetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -452,7 +634,7 @@ intgo _wrap_Req_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -464,7 +646,7 @@ intgo _wrap_Rsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetLightOn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetLightOn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -476,7 +658,7 @@ intgo _wrap_Req_SetLightOn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetLightOn_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -488,7 +670,7 @@ intgo _wrap_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -500,7 +682,7 @@ intgo _wrap_Req_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -512,7 +694,7 @@ intgo _wrap_Rsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_GetLightPara_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_GetLightPara_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -524,7 +706,7 @@ intgo _wrap_Req_GetLightPara_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_GetLightPara_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -536,7 +718,7 @@ intgo _wrap_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -548,7 +730,7 @@ intgo _wrap_Req_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -560,7 +742,7 @@ intgo _wrap_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_UpdateData_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_UpdateData_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -572,7 +754,7 @@ intgo _wrap_Req_UpdateData_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_UpdateData_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -584,7 +766,7 @@ intgo _wrap_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Req_UpdateStart_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Req_UpdateStart_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -596,7 +778,7 @@ intgo _wrap_Req_UpdateStart_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-intgo _wrap_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba() {
+intgo _wrap_Rsp_UpdateStatus_matrixCommon_3aecc8aaebb3a2cf() {
   Cmd result;
   intgo _swig_go_result;
   
@@ -608,7 +790,7 @@ intgo _wrap_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_Head_start_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _swig_go_1) {
+void _wrap_Head_start_set_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0, char _swig_go_1) {
   Head *arg1 = (Head *) 0 ;
   uint8_t arg2 ;
   
@@ -620,7 +802,7 @@ void _wrap_Head_start_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _
 }
 
 
-char _wrap_Head_start_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
+char _wrap_Head_start_get_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0) {
   Head *arg1 = (Head *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -633,7 +815,7 @@ char _wrap_Head_start_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
 }
 
 
-void _wrap_Head_cmd_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _swig_go_1) {
+void _wrap_Head_cmd_set_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0, char _swig_go_1) {
   Head *arg1 = (Head *) 0 ;
   uint8_t arg2 ;
   
@@ -645,7 +827,7 @@ void _wrap_Head_cmd_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _sw
 }
 
 
-char _wrap_Head_cmd_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
+char _wrap_Head_cmd_get_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0) {
   Head *arg1 = (Head *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -658,7 +840,7 @@ char _wrap_Head_cmd_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
 }
 
 
-void _wrap_Head_len_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _swig_go_1) {
+void _wrap_Head_len_set_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0, char _swig_go_1) {
   Head *arg1 = (Head *) 0 ;
   uint8_t arg2 ;
   
@@ -670,7 +852,7 @@ void _wrap_Head_len_set_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char _sw
 }
 
 
-char _wrap_Head_len_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
+char _wrap_Head_len_get_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0) {
   Head *arg1 = (Head *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -683,7 +865,7 @@ char _wrap_Head_len_get_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
 }
 
 
-Head *_wrap_new_Head_matrixCommon_086ff6444b79a7ba() {
+Head *_wrap_new_Head_matrixCommon_3aecc8aaebb3a2cf() {
   Head *result = 0 ;
   Head *_swig_go_result;
   
@@ -694,7 +876,7 @@ Head *_wrap_new_Head_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_Head_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
+void _wrap_delete_Head_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0) {
   Head *arg1 = (Head *) 0 ;
   
   arg1 = *(Head **)&_swig_go_0; 
@@ -704,7 +886,7 @@ void _wrap_delete_Head_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0) {
 }
 
 
-void _wrap_Crc_data_set_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0, char _swig_go_1) {
+void _wrap_Crc_data_set_matrixCommon_3aecc8aaebb3a2cf(Crc *_swig_go_0, char _swig_go_1) {
   Crc *arg1 = (Crc *) 0 ;
   uint8_t arg2 ;
   
@@ -716,7 +898,7 @@ void _wrap_Crc_data_set_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0, char _swi
 }
 
 
-char _wrap_Crc_data_get_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0) {
+char _wrap_Crc_data_get_matrixCommon_3aecc8aaebb3a2cf(Crc *_swig_go_0) {
   Crc *arg1 = (Crc *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -729,7 +911,7 @@ char _wrap_Crc_data_get_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0) {
 }
 
 
-Crc *_wrap_new_Crc_matrixCommon_086ff6444b79a7ba() {
+Crc *_wrap_new_Crc_matrixCommon_3aecc8aaebb3a2cf() {
   Crc *result = 0 ;
   Crc *_swig_go_result;
   
@@ -740,7 +922,7 @@ Crc *_wrap_new_Crc_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_Crc_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0) {
+void _wrap_delete_Crc_matrixCommon_3aecc8aaebb3a2cf(Crc *_swig_go_0) {
   Crc *arg1 = (Crc *) 0 ;
   
   arg1 = *(Crc **)&_swig_go_0; 
@@ -750,7 +932,7 @@ void _wrap_delete_Crc_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0) {
 }
 
 
-void _wrap_S_Heart_angleRoll_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_angleRoll_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -762,7 +944,7 @@ void _wrap_S_Heart_angleRoll_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go
 }
 
 
-short _wrap_S_Heart_angleRoll_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_angleRoll_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -775,7 +957,7 @@ short _wrap_S_Heart_angleRoll_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_g
 }
 
 
-void _wrap_S_Heart_anglePitch_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_anglePitch_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -787,7 +969,7 @@ void _wrap_S_Heart_anglePitch_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_g
 }
 
 
-short _wrap_S_Heart_anglePitch_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_anglePitch_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -800,7 +982,7 @@ short _wrap_S_Heart_anglePitch_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_
 }
 
 
-void _wrap_S_Heart_anglePos_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_anglePos_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -812,7 +994,7 @@ void _wrap_S_Heart_anglePos_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_
 }
 
 
-short _wrap_S_Heart_anglePos_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_anglePos_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -825,7 +1007,7 @@ short _wrap_S_Heart_anglePos_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go
 }
 
 
-void _wrap_S_Heart_temperature_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_temperature_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -837,7 +1019,7 @@ void _wrap_S_Heart_temperature_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_
 }
 
 
-short _wrap_S_Heart_temperature_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_temperature_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -850,7 +1032,7 @@ short _wrap_S_Heart_temperature_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig
 }
 
 
-void _wrap_S_Heart_humidity_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_humidity_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -862,7 +1044,7 @@ void _wrap_S_Heart_humidity_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_
 }
 
 
-short _wrap_S_Heart_humidity_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_humidity_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -875,7 +1057,7 @@ short _wrap_S_Heart_humidity_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go
 }
 
 
-void _wrap_S_Heart_switchVoltage_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_switchVoltage_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -887,7 +1069,7 @@ void _wrap_S_Heart_switchVoltage_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swi
 }
 
 
-short _wrap_S_Heart_switchVoltage_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_switchVoltage_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -900,7 +1082,7 @@ short _wrap_S_Heart_switchVoltage_get_matrixCommon_086ff6444b79a7ba(S_Heart *_sw
 }
 
 
-void _wrap_S_Heart_alarmStatus_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_alarmStatus_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -912,7 +1094,7 @@ void _wrap_S_Heart_alarmStatus_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_
 }
 
 
-short _wrap_S_Heart_alarmStatus_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_alarmStatus_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -925,7 +1107,7 @@ short _wrap_S_Heart_alarmStatus_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig
 }
 
 
-void _wrap_S_Heart_version_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Heart_version_set_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0, short _swig_go_1) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t arg2 ;
   
@@ -937,7 +1119,7 @@ void _wrap_S_Heart_version_set_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0
 }
 
 
-short _wrap_S_Heart_version_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+short _wrap_S_Heart_version_get_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -950,7 +1132,7 @@ short _wrap_S_Heart_version_get_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_
 }
 
 
-S_Heart *_wrap_new_S_Heart_matrixCommon_086ff6444b79a7ba() {
+S_Heart *_wrap_new_S_Heart_matrixCommon_3aecc8aaebb3a2cf() {
   S_Heart *result = 0 ;
   S_Heart *_swig_go_result;
   
@@ -961,7 +1143,7 @@ S_Heart *_wrap_new_S_Heart_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Heart_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
+void _wrap_delete_S_Heart_matrixCommon_3aecc8aaebb3a2cf(S_Heart *_swig_go_0) {
   S_Heart *arg1 = (S_Heart *) 0 ;
   
   arg1 = *(S_Heart **)&_swig_go_0; 
@@ -971,7 +1153,7 @@ void _wrap_delete_S_Heart_matrixCommon_086ff6444b79a7ba(S_Heart *_swig_go_0) {
 }
 
 
-void _wrap_S_Req_SetSwitch_heat1_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetSwitch_heat1_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t arg2 ;
   
@@ -983,7 +1165,7 @@ void _wrap_S_Req_SetSwitch_heat1_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwit
 }
 
 
-char _wrap_S_Req_SetSwitch_heat1_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+char _wrap_S_Req_SetSwitch_heat1_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -996,7 +1178,7 @@ char _wrap_S_Req_SetSwitch_heat1_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwit
 }
 
 
-void _wrap_S_Req_SetSwitch_heat2_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetSwitch_heat2_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t arg2 ;
   
@@ -1008,7 +1190,7 @@ void _wrap_S_Req_SetSwitch_heat2_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwit
 }
 
 
-char _wrap_S_Req_SetSwitch_heat2_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+char _wrap_S_Req_SetSwitch_heat2_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1021,7 +1203,7 @@ char _wrap_S_Req_SetSwitch_heat2_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwit
 }
 
 
-void _wrap_S_Req_SetSwitch_reboot_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetSwitch_reboot_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t arg2 ;
   
@@ -1033,7 +1215,7 @@ void _wrap_S_Req_SetSwitch_reboot_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwi
 }
 
 
-char _wrap_S_Req_SetSwitch_reboot_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+char _wrap_S_Req_SetSwitch_reboot_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1046,7 +1228,7 @@ char _wrap_S_Req_SetSwitch_reboot_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwi
 }
 
 
-void _wrap_S_Req_SetSwitch_enterBootloader_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetSwitch_enterBootloader_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t arg2 ;
   
@@ -1058,7 +1240,7 @@ void _wrap_S_Req_SetSwitch_enterBootloader_set_matrixCommon_086ff6444b79a7ba(S_R
 }
 
 
-char _wrap_S_Req_SetSwitch_enterBootloader_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+char _wrap_S_Req_SetSwitch_enterBootloader_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1071,7 +1253,7 @@ char _wrap_S_Req_SetSwitch_enterBootloader_get_matrixCommon_086ff6444b79a7ba(S_R
 }
 
 
-void _wrap_S_Req_SetSwitch_resetAngle_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetSwitch_resetAngle_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0, char _swig_go_1) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t arg2 ;
   
@@ -1083,7 +1265,7 @@ void _wrap_S_Req_SetSwitch_resetAngle_set_matrixCommon_086ff6444b79a7ba(S_Req_Se
 }
 
 
-char _wrap_S_Req_SetSwitch_resetAngle_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+char _wrap_S_Req_SetSwitch_resetAngle_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1096,7 +1278,7 @@ char _wrap_S_Req_SetSwitch_resetAngle_get_matrixCommon_086ff6444b79a7ba(S_Req_Se
 }
 
 
-S_Req_SetSwitch *_wrap_new_S_Req_SetSwitch_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetSwitch *_wrap_new_S_Req_SetSwitch_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetSwitch *result = 0 ;
   S_Req_SetSwitch *_swig_go_result;
   
@@ -1107,7 +1289,7 @@ S_Req_SetSwitch *_wrap_new_S_Req_SetSwitch_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetSwitch_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch *_swig_go_0) {
+void _wrap_delete_S_Req_SetSwitch_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSwitch *_swig_go_0) {
   S_Req_SetSwitch *arg1 = (S_Req_SetSwitch *) 0 ;
   
   arg1 = *(S_Req_SetSwitch **)&_swig_go_0; 
@@ -1117,7 +1299,7 @@ void _wrap_delete_S_Req_SetSwitch_matrixCommon_086ff6444b79a7ba(S_Req_SetSwitch 
 }
 
 
-void _wrap_S_Req_SetFun_on_set_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetFun_on_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetFun *_swig_go_0, char _swig_go_1) {
   S_Req_SetFun *arg1 = (S_Req_SetFun *) 0 ;
   uint8_t arg2 ;
   
@@ -1129,7 +1311,7 @@ void _wrap_S_Req_SetFun_on_set_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig
 }
 
 
-char _wrap_S_Req_SetFun_on_get_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig_go_0) {
+char _wrap_S_Req_SetFun_on_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetFun *_swig_go_0) {
   S_Req_SetFun *arg1 = (S_Req_SetFun *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1142,7 +1324,7 @@ char _wrap_S_Req_SetFun_on_get_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig
 }
 
 
-S_Req_SetFun *_wrap_new_S_Req_SetFun_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetFun *_wrap_new_S_Req_SetFun_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetFun *result = 0 ;
   S_Req_SetFun *_swig_go_result;
   
@@ -1153,7 +1335,7 @@ S_Req_SetFun *_wrap_new_S_Req_SetFun_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetFun_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig_go_0) {
+void _wrap_delete_S_Req_SetFun_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetFun *_swig_go_0) {
   S_Req_SetFun *arg1 = (S_Req_SetFun *) 0 ;
   
   arg1 = *(S_Req_SetFun **)&_swig_go_0; 
@@ -1163,7 +1345,7 @@ void _wrap_delete_S_Req_SetFun_matrixCommon_086ff6444b79a7ba(S_Req_SetFun *_swig
 }
 
 
-void _wrap_S_Req_SetIp_ip_set_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Req_SetIp_ip_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetIp *_swig_go_0, intgo _swig_go_1) {
   S_Req_SetIp *arg1 = (S_Req_SetIp *) 0 ;
   uint32_t arg2 ;
   
@@ -1175,7 +1357,7 @@ void _wrap_S_Req_SetIp_ip_set_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_g
 }
 
 
-intgo _wrap_S_Req_SetIp_ip_get_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_go_0) {
+intgo _wrap_S_Req_SetIp_ip_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetIp *_swig_go_0) {
   S_Req_SetIp *arg1 = (S_Req_SetIp *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1188,7 +1370,7 @@ intgo _wrap_S_Req_SetIp_ip_get_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_
 }
 
 
-S_Req_SetIp *_wrap_new_S_Req_SetIp_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetIp *_wrap_new_S_Req_SetIp_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetIp *result = 0 ;
   S_Req_SetIp *_swig_go_result;
   
@@ -1199,7 +1381,7 @@ S_Req_SetIp *_wrap_new_S_Req_SetIp_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetIp_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_go_0) {
+void _wrap_delete_S_Req_SetIp_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetIp *_swig_go_0) {
   S_Req_SetIp *arg1 = (S_Req_SetIp *) 0 ;
   
   arg1 = *(S_Req_SetIp **)&_swig_go_0; 
@@ -1209,7 +1391,7 @@ void _wrap_delete_S_Req_SetIp_matrixCommon_086ff6444b79a7ba(S_Req_SetIp *_swig_g
 }
 
 
-void _wrap_S_Req_SetNet_gateway_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Req_SetNet_gateway_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1221,7 +1403,7 @@ void _wrap_S_Req_SetNet_gateway_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *
 }
 
 
-intgo _wrap_S_Req_SetNet_gateway_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0) {
+intgo _wrap_S_Req_SetNet_gateway_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1234,7 +1416,7 @@ intgo _wrap_S_Req_SetNet_gateway_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet 
 }
 
 
-void _wrap_S_Req_SetNet_mask_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Req_SetNet_mask_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1246,7 +1428,7 @@ void _wrap_S_Req_SetNet_mask_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_sw
 }
 
 
-intgo _wrap_S_Req_SetNet_mask_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0) {
+intgo _wrap_S_Req_SetNet_mask_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1259,7 +1441,7 @@ intgo _wrap_S_Req_SetNet_mask_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_s
 }
 
 
-void _wrap_S_Req_SetNet_ip_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Req_SetNet_ip_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0, intgo _swig_go_1) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1271,7 +1453,7 @@ void _wrap_S_Req_SetNet_ip_set_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig
 }
 
 
-intgo _wrap_S_Req_SetNet_ip_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0) {
+intgo _wrap_S_Req_SetNet_ip_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1284,7 +1466,7 @@ intgo _wrap_S_Req_SetNet_ip_get_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swi
 }
 
 
-S_Req_SetNet *_wrap_new_S_Req_SetNet_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetNet *_wrap_new_S_Req_SetNet_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetNet *result = 0 ;
   S_Req_SetNet *_swig_go_result;
   
@@ -1295,7 +1477,7 @@ S_Req_SetNet *_wrap_new_S_Req_SetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetNet_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig_go_0) {
+void _wrap_delete_S_Req_SetNet_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetNet *_swig_go_0) {
   S_Req_SetNet *arg1 = (S_Req_SetNet *) 0 ;
   
   arg1 = *(S_Req_SetNet **)&_swig_go_0; 
@@ -1305,7 +1487,7 @@ void _wrap_delete_S_Req_SetNet_matrixCommon_086ff6444b79a7ba(S_Req_SetNet *_swig
 }
 
 
-void _wrap_S_Req_SetSn_sn_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_go_0, char *_swig_go_1) {
+void _wrap_S_Req_SetSn_sn_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSn *_swig_go_0, char *_swig_go_1) {
   S_Req_SetSn *arg1 = (S_Req_SetSn *) 0 ;
   uint8_t *arg2 ;
   
@@ -1321,7 +1503,7 @@ void _wrap_S_Req_SetSn_sn_set_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_g
 }
 
 
-char *_wrap_S_Req_SetSn_sn_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_go_0) {
+char *_wrap_S_Req_SetSn_sn_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSn *_swig_go_0) {
   S_Req_SetSn *arg1 = (S_Req_SetSn *) 0 ;
   uint8_t *result = 0 ;
   char *_swig_go_result;
@@ -1334,7 +1516,7 @@ char *_wrap_S_Req_SetSn_sn_get_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_
 }
 
 
-S_Req_SetSn *_wrap_new_S_Req_SetSn_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetSn *_wrap_new_S_Req_SetSn_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetSn *result = 0 ;
   S_Req_SetSn *_swig_go_result;
   
@@ -1345,7 +1527,7 @@ S_Req_SetSn *_wrap_new_S_Req_SetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetSn_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_go_0) {
+void _wrap_delete_S_Req_SetSn_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetSn *_swig_go_0) {
   S_Req_SetSn *arg1 = (S_Req_SetSn *) 0 ;
   
   arg1 = *(S_Req_SetSn **)&_swig_go_0; 
@@ -1355,7 +1537,7 @@ void _wrap_delete_S_Req_SetSn_matrixCommon_086ff6444b79a7ba(S_Req_SetSn *_swig_g
 }
 
 
-void _wrap_S_Req_GetNetSn_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_GetNetSn_data_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNetSn *_swig_go_0, char _swig_go_1) {
   S_Req_GetNetSn *arg1 = (S_Req_GetNetSn *) 0 ;
   uint8_t arg2 ;
   
@@ -1367,7 +1549,7 @@ void _wrap_S_Req_GetNetSn_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn 
 }
 
 
-char _wrap_S_Req_GetNetSn_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn *_swig_go_0) {
+char _wrap_S_Req_GetNetSn_data_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNetSn *_swig_go_0) {
   S_Req_GetNetSn *arg1 = (S_Req_GetNetSn *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1380,7 +1562,7 @@ char _wrap_S_Req_GetNetSn_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn 
 }
 
 
-S_Req_GetNetSn *_wrap_new_S_Req_GetNetSn_matrixCommon_086ff6444b79a7ba() {
+S_Req_GetNetSn *_wrap_new_S_Req_GetNetSn_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_GetNetSn *result = 0 ;
   S_Req_GetNetSn *_swig_go_result;
   
@@ -1391,7 +1573,7 @@ S_Req_GetNetSn *_wrap_new_S_Req_GetNetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_GetNetSn_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn *_swig_go_0) {
+void _wrap_delete_S_Req_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNetSn *_swig_go_0) {
   S_Req_GetNetSn *arg1 = (S_Req_GetNetSn *) 0 ;
   
   arg1 = *(S_Req_GetNetSn **)&_swig_go_0; 
@@ -1401,7 +1583,7 @@ void _wrap_delete_S_Req_GetNetSn_matrixCommon_086ff6444b79a7ba(S_Req_GetNetSn *_
 }
 
 
-void _wrap_S_Rsp_GetNetSn_gateway_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNetSn_gateway_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t arg2 ;
   
@@ -1413,7 +1595,7 @@ void _wrap_S_Rsp_GetNetSn_gateway_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet
 }
 
 
-intgo _wrap_S_Rsp_GetNetSn_gateway_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNetSn_gateway_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1426,7 +1608,7 @@ intgo _wrap_S_Rsp_GetNetSn_gateway_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNe
 }
 
 
-void _wrap_S_Rsp_GetNetSn_mask_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNetSn_mask_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t arg2 ;
   
@@ -1438,7 +1620,7 @@ void _wrap_S_Rsp_GetNetSn_mask_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn 
 }
 
 
-intgo _wrap_S_Rsp_GetNetSn_mask_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNetSn_mask_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1451,7 +1633,7 @@ intgo _wrap_S_Rsp_GetNetSn_mask_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn
 }
 
 
-void _wrap_S_Rsp_GetNetSn_ip_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNetSn_ip_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t arg2 ;
   
@@ -1463,7 +1645,7 @@ void _wrap_S_Rsp_GetNetSn_ip_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_
 }
 
 
-intgo _wrap_S_Rsp_GetNetSn_ip_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNetSn_ip_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1476,7 +1658,7 @@ intgo _wrap_S_Rsp_GetNetSn_ip_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *
 }
 
 
-void _wrap_S_Rsp_GetNetSn_sn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0, char *_swig_go_1) {
+void _wrap_S_Rsp_GetNetSn_sn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0, char *_swig_go_1) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint8_t *arg2 ;
   
@@ -1492,7 +1674,7 @@ void _wrap_S_Rsp_GetNetSn_sn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_
 }
 
 
-char *_wrap_S_Rsp_GetNetSn_sn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0) {
+char *_wrap_S_Rsp_GetNetSn_sn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   uint8_t *result = 0 ;
   char *_swig_go_result;
@@ -1505,7 +1687,7 @@ char *_wrap_S_Rsp_GetNetSn_sn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *
 }
 
 
-S_Rsp_GetNetSn *_wrap_new_S_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_GetNetSn *_wrap_new_S_Rsp_GetNetSn_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_GetNetSn *result = 0 ;
   S_Rsp_GetNetSn *_swig_go_result;
   
@@ -1516,7 +1698,7 @@ S_Rsp_GetNetSn *_wrap_new_S_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_swig_go_0) {
+void _wrap_delete_S_Rsp_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNetSn *_swig_go_0) {
   S_Rsp_GetNetSn *arg1 = (S_Rsp_GetNetSn *) 0 ;
   
   arg1 = *(S_Rsp_GetNetSn **)&_swig_go_0; 
@@ -1526,7 +1708,7 @@ void _wrap_delete_S_Rsp_GetNetSn_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNetSn *_
 }
 
 
-void _wrap_S_Req_GetNet_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_GetNet_data_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNet *_swig_go_0, char _swig_go_1) {
   S_Req_GetNet *arg1 = (S_Req_GetNet *) 0 ;
   uint8_t arg2 ;
   
@@ -1538,7 +1720,7 @@ void _wrap_S_Req_GetNet_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_sw
 }
 
 
-char _wrap_S_Req_GetNet_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_swig_go_0) {
+char _wrap_S_Req_GetNet_data_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNet *_swig_go_0) {
   S_Req_GetNet *arg1 = (S_Req_GetNet *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1551,7 +1733,7 @@ char _wrap_S_Req_GetNet_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_sw
 }
 
 
-S_Req_GetNet *_wrap_new_S_Req_GetNet_matrixCommon_086ff6444b79a7ba() {
+S_Req_GetNet *_wrap_new_S_Req_GetNet_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_GetNet *result = 0 ;
   S_Req_GetNet *_swig_go_result;
   
@@ -1562,7 +1744,7 @@ S_Req_GetNet *_wrap_new_S_Req_GetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_GetNet_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_swig_go_0) {
+void _wrap_delete_S_Req_GetNet_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetNet *_swig_go_0) {
   S_Req_GetNet *arg1 = (S_Req_GetNet *) 0 ;
   
   arg1 = *(S_Req_GetNet **)&_swig_go_0; 
@@ -1572,7 +1754,7 @@ void _wrap_delete_S_Req_GetNet_matrixCommon_086ff6444b79a7ba(S_Req_GetNet *_swig
 }
 
 
-void _wrap_S_Rsp_GetNet_gateway_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNet_gateway_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1584,7 +1766,7 @@ void _wrap_S_Rsp_GetNet_gateway_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *
 }
 
 
-intgo _wrap_S_Rsp_GetNet_gateway_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNet_gateway_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1597,7 +1779,7 @@ intgo _wrap_S_Rsp_GetNet_gateway_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet 
 }
 
 
-void _wrap_S_Rsp_GetNet_mask_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNet_mask_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1609,7 +1791,7 @@ void _wrap_S_Rsp_GetNet_mask_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_sw
 }
 
 
-intgo _wrap_S_Rsp_GetNet_mask_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNet_mask_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1622,7 +1804,7 @@ intgo _wrap_S_Rsp_GetNet_mask_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_s
 }
 
 
-void _wrap_S_Rsp_GetNet_ip_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNet_ip_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1634,7 +1816,7 @@ void _wrap_S_Rsp_GetNet_ip_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig
 }
 
 
-intgo _wrap_S_Rsp_GetNet_ip_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNet_ip_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1647,7 +1829,7 @@ intgo _wrap_S_Rsp_GetNet_ip_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swi
 }
 
 
-void _wrap_S_Rsp_GetNet_mac_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0, char *_swig_go_1) {
+void _wrap_S_Rsp_GetNet_mac_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0, char *_swig_go_1) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint8_t *arg2 ;
   
@@ -1663,7 +1845,7 @@ void _wrap_S_Rsp_GetNet_mac_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swi
 }
 
 
-char *_wrap_S_Rsp_GetNet_mac_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+char *_wrap_S_Rsp_GetNet_mac_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint8_t *result = 0 ;
   char *_swig_go_result;
@@ -1676,7 +1858,7 @@ char *_wrap_S_Rsp_GetNet_mac_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_sw
 }
 
 
-void _wrap_S_Rsp_GetNet_remoteIp_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_GetNet_remoteIp_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t arg2 ;
   
@@ -1688,7 +1870,7 @@ void _wrap_S_Rsp_GetNet_remoteIp_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet 
 }
 
 
-intgo _wrap_S_Rsp_GetNet_remoteIp_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+intgo _wrap_S_Rsp_GetNet_remoteIp_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -1701,7 +1883,7 @@ intgo _wrap_S_Rsp_GetNet_remoteIp_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet
 }
 
 
-S_Rsp_GetNet *_wrap_new_S_Rsp_GetNet_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_GetNet *_wrap_new_S_Rsp_GetNet_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_GetNet *result = 0 ;
   S_Rsp_GetNet *_swig_go_result;
   
@@ -1712,7 +1894,7 @@ S_Rsp_GetNet *_wrap_new_S_Rsp_GetNet_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Rsp_GetNet_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig_go_0) {
+void _wrap_delete_S_Rsp_GetNet_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetNet *_swig_go_0) {
   S_Rsp_GetNet *arg1 = (S_Rsp_GetNet *) 0 ;
   
   arg1 = *(S_Rsp_GetNet **)&_swig_go_0; 
@@ -1722,7 +1904,7 @@ void _wrap_delete_S_Rsp_GetNet_matrixCommon_086ff6444b79a7ba(S_Rsp_GetNet *_swig
 }
 
 
-void _wrap_S_Req_SetLightThreshold_thresholdOn_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightThreshold *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Req_SetLightThreshold_thresholdOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightThreshold *_swig_go_0, short _swig_go_1) {
   S_Req_SetLightThreshold *arg1 = (S_Req_SetLightThreshold *) 0 ;
   uint16_t arg2 ;
   
@@ -1734,7 +1916,7 @@ void _wrap_S_Req_SetLightThreshold_thresholdOn_set_matrixCommon_086ff6444b79a7ba
 }
 
 
-short _wrap_S_Req_SetLightThreshold_thresholdOn_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightThreshold *_swig_go_0) {
+short _wrap_S_Req_SetLightThreshold_thresholdOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightThreshold *_swig_go_0) {
   S_Req_SetLightThreshold *arg1 = (S_Req_SetLightThreshold *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -1747,7 +1929,7 @@ short _wrap_S_Req_SetLightThreshold_thresholdOn_get_matrixCommon_086ff6444b79a7b
 }
 
 
-void _wrap_S_Req_SetLightThreshold_thresholdOff_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightThreshold *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Req_SetLightThreshold_thresholdOff_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightThreshold *_swig_go_0, short _swig_go_1) {
   S_Req_SetLightThreshold *arg1 = (S_Req_SetLightThreshold *) 0 ;
   uint16_t arg2 ;
   
@@ -1759,7 +1941,7 @@ void _wrap_S_Req_SetLightThreshold_thresholdOff_set_matrixCommon_086ff6444b79a7b
 }
 
 
-short _wrap_S_Req_SetLightThreshold_thresholdOff_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightThreshold *_swig_go_0) {
+short _wrap_S_Req_SetLightThreshold_thresholdOff_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightThreshold *_swig_go_0) {
   S_Req_SetLightThreshold *arg1 = (S_Req_SetLightThreshold *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -1772,7 +1954,7 @@ short _wrap_S_Req_SetLightThreshold_thresholdOff_get_matrixCommon_086ff6444b79a7
 }
 
 
-S_Req_SetLightThreshold *_wrap_new_S_Req_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetLightThreshold *_wrap_new_S_Req_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetLightThreshold *result = 0 ;
   S_Req_SetLightThreshold *_swig_go_result;
   
@@ -1783,7 +1965,7 @@ S_Req_SetLightThreshold *_wrap_new_S_Req_SetLightThreshold_matrixCommon_086ff644
 }
 
 
-void _wrap_delete_S_Req_SetLightThreshold_matrixCommon_086ff6444b79a7ba(S_Req_SetLightThreshold *_swig_go_0) {
+void _wrap_delete_S_Req_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightThreshold *_swig_go_0) {
   S_Req_SetLightThreshold *arg1 = (S_Req_SetLightThreshold *) 0 ;
   
   arg1 = *(S_Req_SetLightThreshold **)&_swig_go_0; 
@@ -1793,7 +1975,7 @@ void _wrap_delete_S_Req_SetLightThreshold_matrixCommon_086ff6444b79a7ba(S_Req_Se
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_farBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_farBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t arg2 ;
   
@@ -1805,7 +1987,7 @@ void _wrap_S_Rsp_SetLightThreshold_farBrightness_set_matrixCommon_086ff6444b79a7
 }
 
 
-char _wrap_S_Rsp_SetLightThreshold_farBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+char _wrap_S_Rsp_SetLightThreshold_farBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1818,7 +2000,7 @@ char _wrap_S_Rsp_SetLightThreshold_farBrightness_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_midBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_midBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t arg2 ;
   
@@ -1830,7 +2012,7 @@ void _wrap_S_Rsp_SetLightThreshold_midBrightness_set_matrixCommon_086ff6444b79a7
 }
 
 
-char _wrap_S_Rsp_SetLightThreshold_midBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+char _wrap_S_Rsp_SetLightThreshold_midBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1843,7 +2025,7 @@ char _wrap_S_Rsp_SetLightThreshold_midBrightness_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_nearBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_nearBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t arg2 ;
   
@@ -1855,7 +2037,7 @@ void _wrap_S_Rsp_SetLightThreshold_nearBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Rsp_SetLightThreshold_nearBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+char _wrap_S_Rsp_SetLightThreshold_nearBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1868,7 +2050,7 @@ char _wrap_S_Rsp_SetLightThreshold_nearBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_thresholdOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_thresholdOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, short _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint16_t arg2 ;
   
@@ -1880,7 +2062,7 @@ void _wrap_S_Rsp_SetLightThreshold_thresholdOn_set_matrixCommon_086ff6444b79a7ba
 }
 
 
-short _wrap_S_Rsp_SetLightThreshold_thresholdOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+short _wrap_S_Rsp_SetLightThreshold_thresholdOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -1893,7 +2075,7 @@ short _wrap_S_Rsp_SetLightThreshold_thresholdOn_get_matrixCommon_086ff6444b79a7b
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_thresholdOff_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_thresholdOff_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, short _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint16_t arg2 ;
   
@@ -1905,7 +2087,7 @@ void _wrap_S_Rsp_SetLightThreshold_thresholdOff_set_matrixCommon_086ff6444b79a7b
 }
 
 
-short _wrap_S_Rsp_SetLightThreshold_thresholdOff_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+short _wrap_S_Rsp_SetLightThreshold_thresholdOff_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -1918,7 +2100,7 @@ short _wrap_S_Rsp_SetLightThreshold_thresholdOff_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_deviceType_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_deviceType_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t arg2 ;
   
@@ -1930,7 +2112,7 @@ void _wrap_S_Rsp_SetLightThreshold_deviceType_set_matrixCommon_086ff6444b79a7ba(
 }
 
 
-char _wrap_S_Rsp_SetLightThreshold_deviceType_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+char _wrap_S_Rsp_SetLightThreshold_deviceType_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1943,7 +2125,7 @@ char _wrap_S_Rsp_SetLightThreshold_deviceType_get_matrixCommon_086ff6444b79a7ba(
 }
 
 
-void _wrap_S_Rsp_SetLightThreshold_lightStatus_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightThreshold_lightStatus_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t arg2 ;
   
@@ -1955,7 +2137,7 @@ void _wrap_S_Rsp_SetLightThreshold_lightStatus_set_matrixCommon_086ff6444b79a7ba
 }
 
 
-char _wrap_S_Rsp_SetLightThreshold_lightStatus_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+char _wrap_S_Rsp_SetLightThreshold_lightStatus_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -1968,7 +2150,7 @@ char _wrap_S_Rsp_SetLightThreshold_lightStatus_get_matrixCommon_086ff6444b79a7ba
 }
 
 
-S_Rsp_SetLightThreshold *_wrap_new_S_Rsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_SetLightThreshold *_wrap_new_S_Rsp_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_SetLightThreshold *result = 0 ;
   S_Rsp_SetLightThreshold *_swig_go_result;
   
@@ -1979,7 +2161,7 @@ S_Rsp_SetLightThreshold *_wrap_new_S_Rsp_SetLightThreshold_matrixCommon_086ff644
 }
 
 
-void _wrap_delete_S_Rsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightThreshold *_swig_go_0) {
+void _wrap_delete_S_Rsp_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightThreshold *_swig_go_0) {
   S_Rsp_SetLightThreshold *arg1 = (S_Rsp_SetLightThreshold *) 0 ;
   
   arg1 = *(S_Rsp_SetLightThreshold **)&_swig_go_0; 
@@ -1989,7 +2171,7 @@ void _wrap_delete_S_Rsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(S_Rsp_Se
 }
 
 
-void _wrap_S_Req_SetLightOn_status_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightOn *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetLightOn_status_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightOn *_swig_go_0, char _swig_go_1) {
   S_Req_SetLightOn *arg1 = (S_Req_SetLightOn *) 0 ;
   uint8_t arg2 ;
   
@@ -2001,7 +2183,7 @@ void _wrap_S_Req_SetLightOn_status_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLi
 }
 
 
-char _wrap_S_Req_SetLightOn_status_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightOn *_swig_go_0) {
+char _wrap_S_Req_SetLightOn_status_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightOn *_swig_go_0) {
   S_Req_SetLightOn *arg1 = (S_Req_SetLightOn *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2014,7 +2196,7 @@ char _wrap_S_Req_SetLightOn_status_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLi
 }
 
 
-S_Req_SetLightOn *_wrap_new_S_Req_SetLightOn_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetLightOn *_wrap_new_S_Req_SetLightOn_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetLightOn *result = 0 ;
   S_Req_SetLightOn *_swig_go_result;
   
@@ -2025,7 +2207,7 @@ S_Req_SetLightOn *_wrap_new_S_Req_SetLightOn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_SetLightOn_matrixCommon_086ff6444b79a7ba(S_Req_SetLightOn *_swig_go_0) {
+void _wrap_delete_S_Req_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightOn *_swig_go_0) {
   S_Req_SetLightOn *arg1 = (S_Req_SetLightOn *) 0 ;
   
   arg1 = *(S_Req_SetLightOn **)&_swig_go_0; 
@@ -2035,7 +2217,7 @@ void _wrap_delete_S_Req_SetLightOn_matrixCommon_086ff6444b79a7ba(S_Req_SetLightO
 }
 
 
-void _wrap_S_Rsp_SetLightOn_status_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightOn *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightOn_status_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightOn *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightOn *arg1 = (S_Rsp_SetLightOn *) 0 ;
   uint8_t arg2 ;
   
@@ -2047,7 +2229,7 @@ void _wrap_S_Rsp_SetLightOn_status_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLi
 }
 
 
-char _wrap_S_Rsp_SetLightOn_status_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightOn *_swig_go_0) {
+char _wrap_S_Rsp_SetLightOn_status_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightOn *_swig_go_0) {
   S_Rsp_SetLightOn *arg1 = (S_Rsp_SetLightOn *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2060,7 +2242,7 @@ char _wrap_S_Rsp_SetLightOn_status_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLi
 }
 
 
-S_Rsp_SetLightOn *_wrap_new_S_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_SetLightOn *_wrap_new_S_Rsp_SetLightOn_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_SetLightOn *result = 0 ;
   S_Rsp_SetLightOn *_swig_go_result;
   
@@ -2071,7 +2253,7 @@ S_Rsp_SetLightOn *_wrap_new_S_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightOn *_swig_go_0) {
+void _wrap_delete_S_Rsp_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightOn *_swig_go_0) {
   S_Rsp_SetLightOn *arg1 = (S_Rsp_SetLightOn *) 0 ;
   
   arg1 = *(S_Rsp_SetLightOn **)&_swig_go_0; 
@@ -2081,7 +2263,7 @@ void _wrap_delete_S_Rsp_SetLightOn_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightO
 }
 
 
-void _wrap_S_Req_SetLightBrightness_farBrightness_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetLightBrightness_farBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2093,7 +2275,7 @@ void _wrap_S_Req_SetLightBrightness_farBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Req_SetLightBrightness_farBrightness_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Req_SetLightBrightness_farBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2106,7 +2288,7 @@ char _wrap_S_Req_SetLightBrightness_farBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Req_SetLightBrightness_midBrightness_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetLightBrightness_midBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2118,7 +2300,7 @@ void _wrap_S_Req_SetLightBrightness_midBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Req_SetLightBrightness_midBrightness_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Req_SetLightBrightness_midBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2131,7 +2313,7 @@ char _wrap_S_Req_SetLightBrightness_midBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Req_SetLightBrightness_nearBrightness_set_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_SetLightBrightness_nearBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2143,7 +2325,7 @@ void _wrap_S_Req_SetLightBrightness_nearBrightness_set_matrixCommon_086ff6444b79
 }
 
 
-char _wrap_S_Req_SetLightBrightness_nearBrightness_get_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Req_SetLightBrightness_nearBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2156,7 +2338,7 @@ char _wrap_S_Req_SetLightBrightness_nearBrightness_get_matrixCommon_086ff6444b79
 }
 
 
-S_Req_SetLightBrightness *_wrap_new_S_Req_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
+S_Req_SetLightBrightness *_wrap_new_S_Req_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_SetLightBrightness *result = 0 ;
   S_Req_SetLightBrightness *_swig_go_result;
   
@@ -2167,7 +2349,7 @@ S_Req_SetLightBrightness *_wrap_new_S_Req_SetLightBrightness_matrixCommon_086ff6
 }
 
 
-void _wrap_delete_S_Req_SetLightBrightness_matrixCommon_086ff6444b79a7ba(S_Req_SetLightBrightness *_swig_go_0) {
+void _wrap_delete_S_Req_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(S_Req_SetLightBrightness *_swig_go_0) {
   S_Req_SetLightBrightness *arg1 = (S_Req_SetLightBrightness *) 0 ;
   
   arg1 = *(S_Req_SetLightBrightness **)&_swig_go_0; 
@@ -2177,7 +2359,7 @@ void _wrap_delete_S_Req_SetLightBrightness_matrixCommon_086ff6444b79a7ba(S_Req_S
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_farBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_farBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2189,7 +2371,7 @@ void _wrap_S_Rsp_SetLightBrightness_farBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Rsp_SetLightBrightness_farBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Rsp_SetLightBrightness_farBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2202,7 +2384,7 @@ char _wrap_S_Rsp_SetLightBrightness_farBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_midBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_midBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2214,7 +2396,7 @@ void _wrap_S_Rsp_SetLightBrightness_midBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Rsp_SetLightBrightness_midBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Rsp_SetLightBrightness_midBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2227,7 +2409,7 @@ char _wrap_S_Rsp_SetLightBrightness_midBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_nearBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_nearBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2239,7 +2421,7 @@ void _wrap_S_Rsp_SetLightBrightness_nearBrightness_set_matrixCommon_086ff6444b79
 }
 
 
-char _wrap_S_Rsp_SetLightBrightness_nearBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Rsp_SetLightBrightness_nearBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2252,7 +2434,7 @@ char _wrap_S_Rsp_SetLightBrightness_nearBrightness_get_matrixCommon_086ff6444b79
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_thresholdOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_thresholdOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, short _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint16_t arg2 ;
   
@@ -2264,7 +2446,7 @@ void _wrap_S_Rsp_SetLightBrightness_thresholdOn_set_matrixCommon_086ff6444b79a7b
 }
 
 
-short _wrap_S_Rsp_SetLightBrightness_thresholdOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+short _wrap_S_Rsp_SetLightBrightness_thresholdOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -2277,7 +2459,7 @@ short _wrap_S_Rsp_SetLightBrightness_thresholdOn_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_thresholdOff_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_thresholdOff_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, short _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint16_t arg2 ;
   
@@ -2289,7 +2471,7 @@ void _wrap_S_Rsp_SetLightBrightness_thresholdOff_set_matrixCommon_086ff6444b79a7
 }
 
 
-short _wrap_S_Rsp_SetLightBrightness_thresholdOff_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+short _wrap_S_Rsp_SetLightBrightness_thresholdOff_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -2302,7 +2484,7 @@ short _wrap_S_Rsp_SetLightBrightness_thresholdOff_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_deviceType_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_deviceType_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2314,7 +2496,7 @@ void _wrap_S_Rsp_SetLightBrightness_deviceType_set_matrixCommon_086ff6444b79a7ba
 }
 
 
-char _wrap_S_Rsp_SetLightBrightness_deviceType_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Rsp_SetLightBrightness_deviceType_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2327,7 +2509,7 @@ char _wrap_S_Rsp_SetLightBrightness_deviceType_get_matrixCommon_086ff6444b79a7ba
 }
 
 
-void _wrap_S_Rsp_SetLightBrightness_lightStatus_set_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_SetLightBrightness_lightStatus_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0, char _swig_go_1) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t arg2 ;
   
@@ -2339,7 +2521,7 @@ void _wrap_S_Rsp_SetLightBrightness_lightStatus_set_matrixCommon_086ff6444b79a7b
 }
 
 
-char _wrap_S_Rsp_SetLightBrightness_lightStatus_get_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+char _wrap_S_Rsp_SetLightBrightness_lightStatus_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2352,7 +2534,7 @@ char _wrap_S_Rsp_SetLightBrightness_lightStatus_get_matrixCommon_086ff6444b79a7b
 }
 
 
-S_Rsp_SetLightBrightness *_wrap_new_S_Rsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_SetLightBrightness *_wrap_new_S_Rsp_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_SetLightBrightness *result = 0 ;
   S_Rsp_SetLightBrightness *_swig_go_result;
   
@@ -2363,7 +2545,7 @@ S_Rsp_SetLightBrightness *_wrap_new_S_Rsp_SetLightBrightness_matrixCommon_086ff6
 }
 
 
-void _wrap_delete_S_Rsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(S_Rsp_SetLightBrightness *_swig_go_0) {
+void _wrap_delete_S_Rsp_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_SetLightBrightness *_swig_go_0) {
   S_Rsp_SetLightBrightness *arg1 = (S_Rsp_SetLightBrightness *) 0 ;
   
   arg1 = *(S_Rsp_SetLightBrightness **)&_swig_go_0; 
@@ -2373,7 +2555,7 @@ void _wrap_delete_S_Rsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(S_Rsp_S
 }
 
 
-void _wrap_S_Req_GetLightPara_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Req_GetLightPara_data_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Req_GetLightPara *arg1 = (S_Req_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2385,7 +2567,7 @@ void _wrap_S_Req_GetLightPara_data_set_matrixCommon_086ff6444b79a7ba(S_Req_GetLi
 }
 
 
-char _wrap_S_Req_GetLightPara_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetLightPara *_swig_go_0) {
+char _wrap_S_Req_GetLightPara_data_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetLightPara *_swig_go_0) {
   S_Req_GetLightPara *arg1 = (S_Req_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2398,7 +2580,7 @@ char _wrap_S_Req_GetLightPara_data_get_matrixCommon_086ff6444b79a7ba(S_Req_GetLi
 }
 
 
-S_Req_GetLightPara *_wrap_new_S_Req_GetLightPara_matrixCommon_086ff6444b79a7ba() {
+S_Req_GetLightPara *_wrap_new_S_Req_GetLightPara_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_GetLightPara *result = 0 ;
   S_Req_GetLightPara *_swig_go_result;
   
@@ -2409,7 +2591,7 @@ S_Req_GetLightPara *_wrap_new_S_Req_GetLightPara_matrixCommon_086ff6444b79a7ba()
 }
 
 
-void _wrap_delete_S_Req_GetLightPara_matrixCommon_086ff6444b79a7ba(S_Req_GetLightPara *_swig_go_0) {
+void _wrap_delete_S_Req_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(S_Req_GetLightPara *_swig_go_0) {
   S_Req_GetLightPara *arg1 = (S_Req_GetLightPara *) 0 ;
   
   arg1 = *(S_Req_GetLightPara **)&_swig_go_0; 
@@ -2419,7 +2601,7 @@ void _wrap_delete_S_Req_GetLightPara_matrixCommon_086ff6444b79a7ba(S_Req_GetLigh
 }
 
 
-void _wrap_S_Rsp_GetLightPara_farLightBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_farLightBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2431,7 +2613,7 @@ void _wrap_S_Rsp_GetLightPara_farLightBrightness_set_matrixCommon_086ff6444b79a7
 }
 
 
-char _wrap_S_Rsp_GetLightPara_farLightBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_farLightBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2444,7 +2626,7 @@ char _wrap_S_Rsp_GetLightPara_farLightBrightness_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_GetLightPara_farLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_farLightOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2456,7 +2638,7 @@ void _wrap_S_Rsp_GetLightPara_farLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-char _wrap_S_Rsp_GetLightPara_farLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_farLightOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2469,7 +2651,7 @@ char _wrap_S_Rsp_GetLightPara_farLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-void _wrap_S_Rsp_GetLightPara_midLightBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_midLightBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2481,7 +2663,7 @@ void _wrap_S_Rsp_GetLightPara_midLightBrightness_set_matrixCommon_086ff6444b79a7
 }
 
 
-char _wrap_S_Rsp_GetLightPara_midLightBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_midLightBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2494,7 +2676,7 @@ char _wrap_S_Rsp_GetLightPara_midLightBrightness_get_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_S_Rsp_GetLightPara_midLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_midLightOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2506,7 +2688,7 @@ void _wrap_S_Rsp_GetLightPara_midLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-char _wrap_S_Rsp_GetLightPara_midLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_midLightOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2519,7 +2701,7 @@ char _wrap_S_Rsp_GetLightPara_midLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-void _wrap_S_Rsp_GetLightPara_nearLightBrightness_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_nearLightBrightness_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2531,7 +2713,7 @@ void _wrap_S_Rsp_GetLightPara_nearLightBrightness_set_matrixCommon_086ff6444b79a
 }
 
 
-char _wrap_S_Rsp_GetLightPara_nearLightBrightness_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_nearLightBrightness_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2544,7 +2726,7 @@ char _wrap_S_Rsp_GetLightPara_nearLightBrightness_get_matrixCommon_086ff6444b79a
 }
 
 
-void _wrap_S_Rsp_GetLightPara_nearLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_nearLightOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2556,7 +2738,7 @@ void _wrap_S_Rsp_GetLightPara_nearLightOn_set_matrixCommon_086ff6444b79a7ba(S_Rs
 }
 
 
-char _wrap_S_Rsp_GetLightPara_nearLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_nearLightOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2569,7 +2751,7 @@ char _wrap_S_Rsp_GetLightPara_nearLightOn_get_matrixCommon_086ff6444b79a7ba(S_Rs
 }
 
 
-void _wrap_S_Rsp_GetLightPara_deviceType_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_deviceType_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, char _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t arg2 ;
   
@@ -2581,7 +2763,7 @@ void _wrap_S_Rsp_GetLightPara_deviceType_set_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-char _wrap_S_Rsp_GetLightPara_deviceType_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+char _wrap_S_Rsp_GetLightPara_deviceType_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint8_t result;
   char _swig_go_result;
@@ -2594,7 +2776,7 @@ char _wrap_S_Rsp_GetLightPara_deviceType_get_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-void _wrap_S_Rsp_GetLightPara_thresholdOn_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_thresholdOn_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, short _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint16_t arg2 ;
   
@@ -2606,7 +2788,7 @@ void _wrap_S_Rsp_GetLightPara_thresholdOn_set_matrixCommon_086ff6444b79a7ba(S_Rs
 }
 
 
-short _wrap_S_Rsp_GetLightPara_thresholdOn_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+short _wrap_S_Rsp_GetLightPara_thresholdOn_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -2619,7 +2801,7 @@ short _wrap_S_Rsp_GetLightPara_thresholdOn_get_matrixCommon_086ff6444b79a7ba(S_R
 }
 
 
-void _wrap_S_Rsp_GetLightPara_thresholdOff_set_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0, short _swig_go_1) {
+void _wrap_S_Rsp_GetLightPara_thresholdOff_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0, short _swig_go_1) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint16_t arg2 ;
   
@@ -2631,7 +2813,7 @@ void _wrap_S_Rsp_GetLightPara_thresholdOff_set_matrixCommon_086ff6444b79a7ba(S_R
 }
 
 
-short _wrap_S_Rsp_GetLightPara_thresholdOff_get_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+short _wrap_S_Rsp_GetLightPara_thresholdOff_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   uint16_t result;
   short _swig_go_result;
@@ -2644,7 +2826,7 @@ short _wrap_S_Rsp_GetLightPara_thresholdOff_get_matrixCommon_086ff6444b79a7ba(S_
 }
 
 
-S_Rsp_GetLightPara *_wrap_new_S_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_GetLightPara *_wrap_new_S_Rsp_GetLightPara_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_GetLightPara *result = 0 ;
   S_Rsp_GetLightPara *_swig_go_result;
   
@@ -2655,7 +2837,7 @@ S_Rsp_GetLightPara *_wrap_new_S_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba()
 }
 
 
-void _wrap_delete_S_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLightPara *_swig_go_0) {
+void _wrap_delete_S_Rsp_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_GetLightPara *_swig_go_0) {
   S_Rsp_GetLightPara *arg1 = (S_Rsp_GetLightPara *) 0 ;
   
   arg1 = *(S_Rsp_GetLightPara **)&_swig_go_0; 
@@ -2665,7 +2847,7 @@ void _wrap_delete_S_Rsp_GetLightPara_matrixCommon_086ff6444b79a7ba(S_Rsp_GetLigh
 }
 
 
-void _wrap_S_Req_UpdateDataSize_totalLen_set_matrixCommon_086ff6444b79a7ba(S_Req_UpdateDataSize *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Req_UpdateDataSize_totalLen_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateDataSize *_swig_go_0, intgo _swig_go_1) {
   S_Req_UpdateDataSize *arg1 = (S_Req_UpdateDataSize *) 0 ;
   uint32_t arg2 ;
   
@@ -2677,7 +2859,7 @@ void _wrap_S_Req_UpdateDataSize_totalLen_set_matrixCommon_086ff6444b79a7ba(S_Req
 }
 
 
-intgo _wrap_S_Req_UpdateDataSize_totalLen_get_matrixCommon_086ff6444b79a7ba(S_Req_UpdateDataSize *_swig_go_0) {
+intgo _wrap_S_Req_UpdateDataSize_totalLen_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateDataSize *_swig_go_0) {
   S_Req_UpdateDataSize *arg1 = (S_Req_UpdateDataSize *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -2690,7 +2872,7 @@ intgo _wrap_S_Req_UpdateDataSize_totalLen_get_matrixCommon_086ff6444b79a7ba(S_Re
 }
 
 
-S_Req_UpdateDataSize *_wrap_new_S_Req_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
+S_Req_UpdateDataSize *_wrap_new_S_Req_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_UpdateDataSize *result = 0 ;
   S_Req_UpdateDataSize *_swig_go_result;
   
@@ -2701,7 +2883,7 @@ S_Req_UpdateDataSize *_wrap_new_S_Req_UpdateDataSize_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_delete_S_Req_UpdateDataSize_matrixCommon_086ff6444b79a7ba(S_Req_UpdateDataSize *_swig_go_0) {
+void _wrap_delete_S_Req_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateDataSize *_swig_go_0) {
   S_Req_UpdateDataSize *arg1 = (S_Req_UpdateDataSize *) 0 ;
   
   arg1 = *(S_Req_UpdateDataSize **)&_swig_go_0; 
@@ -2711,7 +2893,7 @@ void _wrap_delete_S_Req_UpdateDataSize_matrixCommon_086ff6444b79a7ba(S_Req_Updat
 }
 
 
-void _wrap_S_Rsp_UpdateDataSize_totalLen_set_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateDataSize *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_UpdateDataSize_totalLen_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateDataSize *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_UpdateDataSize *arg1 = (S_Rsp_UpdateDataSize *) 0 ;
   uint32_t arg2 ;
   
@@ -2723,7 +2905,7 @@ void _wrap_S_Rsp_UpdateDataSize_totalLen_set_matrixCommon_086ff6444b79a7ba(S_Rsp
 }
 
 
-intgo _wrap_S_Rsp_UpdateDataSize_totalLen_get_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateDataSize *_swig_go_0) {
+intgo _wrap_S_Rsp_UpdateDataSize_totalLen_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateDataSize *_swig_go_0) {
   S_Rsp_UpdateDataSize *arg1 = (S_Rsp_UpdateDataSize *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -2736,7 +2918,7 @@ intgo _wrap_S_Rsp_UpdateDataSize_totalLen_get_matrixCommon_086ff6444b79a7ba(S_Rs
 }
 
 
-S_Rsp_UpdateDataSize *_wrap_new_S_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_UpdateDataSize *_wrap_new_S_Rsp_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_UpdateDataSize *result = 0 ;
   S_Rsp_UpdateDataSize *_swig_go_result;
   
@@ -2747,7 +2929,7 @@ S_Rsp_UpdateDataSize *_wrap_new_S_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7
 }
 
 
-void _wrap_delete_S_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateDataSize *_swig_go_0) {
+void _wrap_delete_S_Rsp_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateDataSize *_swig_go_0) {
   S_Rsp_UpdateDataSize *arg1 = (S_Rsp_UpdateDataSize *) 0 ;
   
   arg1 = *(S_Rsp_UpdateDataSize **)&_swig_go_0; 
@@ -2757,39 +2939,32 @@ void _wrap_delete_S_Rsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(S_Rsp_Updat
 }
 
 
-void _wrap_S_Req_UpdateData_data_set_matrixCommon_086ff6444b79a7ba(S_Req_UpdateData *_swig_go_0, std::vector< unsigned char > *_swig_go_1) {
+void _wrap_S_Req_UpdateData_data_set_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateData *_swig_go_0, std::vector< unsigned char > *_swig_go_1) {
   S_Req_UpdateData *arg1 = (S_Req_UpdateData *) 0 ;
-  std::vector< uint8_t > arg2 ;
-  std::vector< uint8_t > *argp2 ;
+  std::vector< uint8_t > *arg2 = (std::vector< uint8_t > *) 0 ;
   
   arg1 = *(S_Req_UpdateData **)&_swig_go_0; 
+  arg2 = *(std::vector< uint8_t > **)&_swig_go_1; 
   
-  argp2 = (std::vector< uint8_t > *)_swig_go_1;
-  if (argp2 == NULL) {
-    _swig_gopanic("Attempt to dereference null std::vector< uint8_t >");
-  }
-  arg2 = (std::vector< uint8_t >)*argp2;
-  
-  
-  if (arg1) (arg1)->data = arg2;
+  if (arg1) (arg1)->data = *arg2;
   
 }
 
 
-std::vector< unsigned char > *_wrap_S_Req_UpdateData_data_get_matrixCommon_086ff6444b79a7ba(S_Req_UpdateData *_swig_go_0) {
+std::vector< unsigned char > *_wrap_S_Req_UpdateData_data_get_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateData *_swig_go_0) {
   S_Req_UpdateData *arg1 = (S_Req_UpdateData *) 0 ;
-  std::vector< uint8_t > result;
+  std::vector< uint8_t > *result = 0 ;
   std::vector< unsigned char > *_swig_go_result;
   
   arg1 = *(S_Req_UpdateData **)&_swig_go_0; 
   
-  result =  ((arg1)->data);
-  *(std::vector< uint8_t > **)&_swig_go_result = new std::vector< uint8_t >(result); 
+  result = (std::vector< uint8_t > *)& ((arg1)->data);
+  *(std::vector< uint8_t > **)&_swig_go_result = (std::vector< uint8_t > *)result; 
   return _swig_go_result;
 }
 
 
-S_Req_UpdateData *_wrap_new_S_Req_UpdateData_matrixCommon_086ff6444b79a7ba() {
+S_Req_UpdateData *_wrap_new_S_Req_UpdateData_matrixCommon_3aecc8aaebb3a2cf() {
   S_Req_UpdateData *result = 0 ;
   S_Req_UpdateData *_swig_go_result;
   
@@ -2800,7 +2975,7 @@ S_Req_UpdateData *_wrap_new_S_Req_UpdateData_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Req_UpdateData_matrixCommon_086ff6444b79a7ba(S_Req_UpdateData *_swig_go_0) {
+void _wrap_delete_S_Req_UpdateData_matrixCommon_3aecc8aaebb3a2cf(S_Req_UpdateData *_swig_go_0) {
   S_Req_UpdateData *arg1 = (S_Req_UpdateData *) 0 ;
   
   arg1 = *(S_Req_UpdateData **)&_swig_go_0; 
@@ -2810,7 +2985,7 @@ void _wrap_delete_S_Req_UpdateData_matrixCommon_086ff6444b79a7ba(S_Req_UpdateDat
 }
 
 
-void _wrap_S_Rsp_UpdateData_eachLen_set_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateData *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_UpdateData_eachLen_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateData *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_UpdateData *arg1 = (S_Rsp_UpdateData *) 0 ;
   uint32_t arg2 ;
   
@@ -2822,7 +2997,7 @@ void _wrap_S_Rsp_UpdateData_eachLen_set_matrixCommon_086ff6444b79a7ba(S_Rsp_Upda
 }
 
 
-intgo _wrap_S_Rsp_UpdateData_eachLen_get_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateData *_swig_go_0) {
+intgo _wrap_S_Rsp_UpdateData_eachLen_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateData *_swig_go_0) {
   S_Rsp_UpdateData *arg1 = (S_Rsp_UpdateData *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -2835,7 +3010,7 @@ intgo _wrap_S_Rsp_UpdateData_eachLen_get_matrixCommon_086ff6444b79a7ba(S_Rsp_Upd
 }
 
 
-S_Rsp_UpdateData *_wrap_new_S_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_UpdateData *_wrap_new_S_Rsp_UpdateData_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_UpdateData *result = 0 ;
   S_Rsp_UpdateData *_swig_go_result;
   
@@ -2846,7 +3021,7 @@ S_Rsp_UpdateData *_wrap_new_S_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba() {
 }
 
 
-void _wrap_delete_S_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateData *_swig_go_0) {
+void _wrap_delete_S_Rsp_UpdateData_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateData *_swig_go_0) {
   S_Rsp_UpdateData *arg1 = (S_Rsp_UpdateData *) 0 ;
   
   arg1 = *(S_Rsp_UpdateData **)&_swig_go_0; 
@@ -2856,7 +3031,7 @@ void _wrap_delete_S_Rsp_UpdateData_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateDat
 }
 
 
-void _wrap_S_Rsp_UpdateStatus_status_set_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateStatus *_swig_go_0, intgo _swig_go_1) {
+void _wrap_S_Rsp_UpdateStatus_status_set_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateStatus *_swig_go_0, intgo _swig_go_1) {
   S_Rsp_UpdateStatus *arg1 = (S_Rsp_UpdateStatus *) 0 ;
   uint32_t arg2 ;
   
@@ -2868,7 +3043,7 @@ void _wrap_S_Rsp_UpdateStatus_status_set_matrixCommon_086ff6444b79a7ba(S_Rsp_Upd
 }
 
 
-intgo _wrap_S_Rsp_UpdateStatus_status_get_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateStatus *_swig_go_0) {
+intgo _wrap_S_Rsp_UpdateStatus_status_get_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateStatus *_swig_go_0) {
   S_Rsp_UpdateStatus *arg1 = (S_Rsp_UpdateStatus *) 0 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -2881,7 +3056,7 @@ intgo _wrap_S_Rsp_UpdateStatus_status_get_matrixCommon_086ff6444b79a7ba(S_Rsp_Up
 }
 
 
-S_Rsp_UpdateStatus *_wrap_new_S_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba() {
+S_Rsp_UpdateStatus *_wrap_new_S_Rsp_UpdateStatus_matrixCommon_3aecc8aaebb3a2cf() {
   S_Rsp_UpdateStatus *result = 0 ;
   S_Rsp_UpdateStatus *_swig_go_result;
   
@@ -2892,7 +3067,7 @@ S_Rsp_UpdateStatus *_wrap_new_S_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba()
 }
 
 
-void _wrap_delete_S_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateStatus *_swig_go_0) {
+void _wrap_delete_S_Rsp_UpdateStatus_matrixCommon_3aecc8aaebb3a2cf(S_Rsp_UpdateStatus *_swig_go_0) {
   S_Rsp_UpdateStatus *arg1 = (S_Rsp_UpdateStatus *) 0 ;
   
   arg1 = *(S_Rsp_UpdateStatus **)&_swig_go_0; 
@@ -2902,7 +3077,7 @@ void _wrap_delete_S_Rsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(S_Rsp_UpdateS
 }
 
 
-short _wrap_reverse16_matrixCommon_086ff6444b79a7ba(short _swig_go_0) {
+short _wrap_reverse16_matrixCommon_3aecc8aaebb3a2cf(short _swig_go_0) {
   uint16_t arg1 ;
   uint16_t result;
   short _swig_go_result;
@@ -2915,7 +3090,7 @@ short _wrap_reverse16_matrixCommon_086ff6444b79a7ba(short _swig_go_0) {
 }
 
 
-intgo _wrap_reverse32_matrixCommon_086ff6444b79a7ba(intgo _swig_go_0) {
+intgo _wrap_reverse32_matrixCommon_3aecc8aaebb3a2cf(intgo _swig_go_0) {
   uint32_t arg1 ;
   uint32_t result;
   intgo _swig_go_result;
@@ -2928,7 +3103,7 @@ intgo _wrap_reverse32_matrixCommon_086ff6444b79a7ba(intgo _swig_go_0) {
 }
 
 
-long long _wrap_reverse64_matrixCommon_086ff6444b79a7ba(long long _swig_go_0) {
+long long _wrap_reverse64_matrixCommon_3aecc8aaebb3a2cf(long long _swig_go_0) {
   uint64_t arg1 ;
   uint64_t result;
   long long _swig_go_result;
@@ -2941,7 +3116,7 @@ long long _wrap_reverse64_matrixCommon_086ff6444b79a7ba(long long _swig_go_0) {
 }
 
 
-char _wrap_crcSum_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo _swig_go_1) {
+char _wrap_crcSum_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo _swig_go_1) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t arg2 ;
   uint8_t result;
@@ -2956,7 +3131,7 @@ char _wrap_crcSum_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo _swig_go
 }
 
 
-intgo _wrap_packStructHead_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, Head *_swig_go_2) {
+intgo _wrap_packStructHead_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, Head *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   Head arg3 ;
@@ -2980,7 +3155,7 @@ intgo _wrap_packStructHead_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo
 }
 
 
-intgo _wrap_packStructCrc_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, Crc *_swig_go_2) {
+intgo _wrap_packStructCrc_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, Crc *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   Crc arg3 ;
@@ -3004,7 +3179,7 @@ intgo _wrap_packStructCrc_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo 
 }
 
 
-intgo _wrap_packStructHeart_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructHeart_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3021,7 +3196,7 @@ intgo _wrap_packStructHeart_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intg
 }
 
 
-intgo _wrap_packStructReq_SetSwitch_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetSwitch_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3038,7 +3213,7 @@ intgo _wrap_packStructReq_SetSwitch_matrixCommon_086ff6444b79a7ba(char *_swig_go
 }
 
 
-intgo _wrap_packStructReq_SetFun_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetFun_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3055,7 +3230,7 @@ intgo _wrap_packStructReq_SetFun_matrixCommon_086ff6444b79a7ba(char *_swig_go_0,
 }
 
 
-intgo _wrap_packStructReq_SetIp_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetIp_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3072,7 +3247,7 @@ intgo _wrap_packStructReq_SetIp_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, 
 }
 
 
-intgo _wrap_packStructReq_SetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetNet_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3089,7 +3264,7 @@ intgo _wrap_packStructReq_SetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0,
 }
 
 
-intgo _wrap_packStructReq_SetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetSn_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3106,7 +3281,7 @@ intgo _wrap_packStructReq_SetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, 
 }
 
 
-intgo _wrap_packStructReq_GetNetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3123,7 +3298,7 @@ intgo _wrap_packStructReq_GetNetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_
 }
 
 
-intgo _wrap_packStructRsp_GetNetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3140,7 +3315,7 @@ intgo _wrap_packStructRsp_GetNetSn_matrixCommon_086ff6444b79a7ba(char *_swig_go_
 }
 
 
-intgo _wrap_packStructReq_GetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_GetNet_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3157,7 +3332,7 @@ intgo _wrap_packStructReq_GetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0,
 }
 
 
-intgo _wrap_packStructRsp_GetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_GetNet_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3174,7 +3349,7 @@ intgo _wrap_packStructRsp_GetNet_matrixCommon_086ff6444b79a7ba(char *_swig_go_0,
 }
 
 
-intgo _wrap_packStructReq_SetLightThreshold_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3191,7 +3366,7 @@ intgo _wrap_packStructReq_SetLightThreshold_matrixCommon_086ff6444b79a7ba(char *
 }
 
 
-intgo _wrap_packStructRsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3208,7 +3383,7 @@ intgo _wrap_packStructRsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(char *
 }
 
 
-intgo _wrap_packStructReq_SetLightOn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3225,7 +3400,7 @@ intgo _wrap_packStructReq_SetLightOn_matrixCommon_086ff6444b79a7ba(char *_swig_g
 }
 
 
-intgo _wrap_packStructRsp_SetLightOn_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3242,7 +3417,7 @@ intgo _wrap_packStructRsp_SetLightOn_matrixCommon_086ff6444b79a7ba(char *_swig_g
 }
 
 
-intgo _wrap_packStructReq_SetLightBrightness_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3259,7 +3434,7 @@ intgo _wrap_packStructReq_SetLightBrightness_matrixCommon_086ff6444b79a7ba(char 
 }
 
 
-intgo _wrap_packStructRsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3276,7 +3451,7 @@ intgo _wrap_packStructRsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(char 
 }
 
 
-intgo _wrap_packStructReq_GetLightPara_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3293,7 +3468,7 @@ intgo _wrap_packStructReq_GetLightPara_matrixCommon_086ff6444b79a7ba(char *_swig
 }
 
 
-intgo _wrap_packStructRsp_GetLightPara_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3310,7 +3485,7 @@ intgo _wrap_packStructRsp_GetLightPara_matrixCommon_086ff6444b79a7ba(char *_swig
 }
 
 
-intgo _wrap_packStructReq_UpdateDataSize_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3327,7 +3502,7 @@ intgo _wrap_packStructReq_UpdateDataSize_matrixCommon_086ff6444b79a7ba(char *_sw
 }
 
 
-intgo _wrap_packStructRsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3344,7 +3519,7 @@ intgo _wrap_packStructRsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(char *_sw
 }
 
 
-intgo _wrap_packStructReq_UpdateData_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructReq_UpdateData_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3361,7 +3536,7 @@ intgo _wrap_packStructReq_UpdateData_matrixCommon_086ff6444b79a7ba(char *_swig_g
 }
 
 
-intgo _wrap_packStructRsp_UpdateData_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_UpdateData_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3378,7 +3553,7 @@ intgo _wrap_packStructRsp_UpdateData_matrixCommon_086ff6444b79a7ba(char *_swig_g
 }
 
 
-intgo _wrap_packStructRsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
+intgo _wrap_packStructRsp_UpdateStatus_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, void *_swig_go_2) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   void *arg3 = (void *) 0 ;
@@ -3395,7 +3570,7 @@ intgo _wrap_packStructRsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(char *_swig
 }
 
 
-intgo _wrap_packSendUpdate_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1) {
+intgo _wrap_packSendUpdate_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   int result;
@@ -3410,7 +3585,7 @@ intgo _wrap_packSendUpdate_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo
 }
 
 
-bool _wrap_unpackIsCanUpdate_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo _swig_go_1) {
+bool _wrap_unpackIsCanUpdate_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo _swig_go_1) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t arg2 ;
   bool result;
@@ -3425,7 +3600,7 @@ bool _wrap_unpackIsCanUpdate_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, int
 }
 
 
-intgo _wrap_unpackSawHead_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawHead_matrixCommon_3aecc8aaebb3a2cf(Head *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   Head *arg1 = (Head *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3442,7 +3617,7 @@ intgo _wrap_unpackSawHead_matrixCommon_086ff6444b79a7ba(Head *_swig_go_0, char *
 }
 
 
-intgo _wrap_unpackSawCrc_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawCrc_matrixCommon_3aecc8aaebb3a2cf(Crc *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   Crc *arg1 = (Crc *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3459,7 +3634,7 @@ intgo _wrap_unpackSawCrc_matrixCommon_086ff6444b79a7ba(Crc *_swig_go_0, char *_s
 }
 
 
-intgo _wrap_unpackSawHeart_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawHeart_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3476,7 +3651,7 @@ intgo _wrap_unpackSawHeart_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char 
 }
 
 
-intgo _wrap_unpackSawReq_SetSwitch_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetSwitch_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3493,7 +3668,7 @@ intgo _wrap_unpackSawReq_SetSwitch_matrixCommon_086ff6444b79a7ba(void *_swig_go_
 }
 
 
-intgo _wrap_unpackSawReq_SetFun_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetFun_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3510,7 +3685,7 @@ intgo _wrap_unpackSawReq_SetFun_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, 
 }
 
 
-intgo _wrap_unpackSawReq_SetIp_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetIp_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3527,7 +3702,7 @@ intgo _wrap_unpackSawReq_SetIp_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, c
 }
 
 
-intgo _wrap_unpackSawReq_SetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetNet_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3544,7 +3719,7 @@ intgo _wrap_unpackSawReq_SetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, 
 }
 
 
-intgo _wrap_unpackSawReq_SetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetSn_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3561,7 +3736,7 @@ intgo _wrap_unpackSawReq_SetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, c
 }
 
 
-intgo _wrap_unpackSawReq_GetNetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3578,7 +3753,7 @@ intgo _wrap_unpackSawReq_GetNetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0
 }
 
 
-intgo _wrap_unpackSawRsp_GetNetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_GetNetSn_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3595,7 +3770,7 @@ intgo _wrap_unpackSawRsp_GetNetSn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0
 }
 
 
-intgo _wrap_unpackSawReq_GetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_GetNet_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3612,7 +3787,7 @@ intgo _wrap_unpackSawReq_GetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, 
 }
 
 
-intgo _wrap_unpackSawRsp_GetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_GetNet_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3629,7 +3804,7 @@ intgo _wrap_unpackSawRsp_GetNet_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, 
 }
 
 
-intgo _wrap_unpackSawReq_SetLightThreshold_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3646,7 +3821,7 @@ intgo _wrap_unpackSawReq_SetLightThreshold_matrixCommon_086ff6444b79a7ba(void *_
 }
 
 
-intgo _wrap_unpackSawRsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_SetLightThreshold_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3663,7 +3838,7 @@ intgo _wrap_unpackSawRsp_SetLightThreshold_matrixCommon_086ff6444b79a7ba(void *_
 }
 
 
-intgo _wrap_unpackSawReq_SetLightOn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3680,7 +3855,7 @@ intgo _wrap_unpackSawReq_SetLightOn_matrixCommon_086ff6444b79a7ba(void *_swig_go
 }
 
 
-intgo _wrap_unpackSawRsp_SetLightOn_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_SetLightOn_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3697,7 +3872,7 @@ intgo _wrap_unpackSawRsp_SetLightOn_matrixCommon_086ff6444b79a7ba(void *_swig_go
 }
 
 
-intgo _wrap_unpackSawReq_SetLightBrightness_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3714,7 +3889,7 @@ intgo _wrap_unpackSawReq_SetLightBrightness_matrixCommon_086ff6444b79a7ba(void *
 }
 
 
-intgo _wrap_unpackSawRsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_SetLightBrightness_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3731,7 +3906,7 @@ intgo _wrap_unpackSawRsp_SetLightBrightness_matrixCommon_086ff6444b79a7ba(void *
 }
 
 
-intgo _wrap_unpackSawReq_GetLightPara_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3748,7 +3923,7 @@ intgo _wrap_unpackSawReq_GetLightPara_matrixCommon_086ff6444b79a7ba(void *_swig_
 }
 
 
-intgo _wrap_unpackSawRsp_GetLightPara_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_GetLightPara_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3765,7 +3940,7 @@ intgo _wrap_unpackSawRsp_GetLightPara_matrixCommon_086ff6444b79a7ba(void *_swig_
 }
 
 
-intgo _wrap_unpackSawReq_UpdateDataSize_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3782,7 +3957,7 @@ intgo _wrap_unpackSawReq_UpdateDataSize_matrixCommon_086ff6444b79a7ba(void *_swi
 }
 
 
-intgo _wrap_unpackSawRsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_UpdateDataSize_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3799,7 +3974,7 @@ intgo _wrap_unpackSawRsp_UpdateDataSize_matrixCommon_086ff6444b79a7ba(void *_swi
 }
 
 
-intgo _wrap_unpackSawReq_UpdateData_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawReq_UpdateData_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3816,7 +3991,7 @@ intgo _wrap_unpackSawReq_UpdateData_matrixCommon_086ff6444b79a7ba(void *_swig_go
 }
 
 
-intgo _wrap_unpackSawRsp_UpdateData_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_UpdateData_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3833,7 +4008,7 @@ intgo _wrap_unpackSawRsp_UpdateData_matrixCommon_086ff6444b79a7ba(void *_swig_go
 }
 
 
-intgo _wrap_unpackSawRsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
+intgo _wrap_unpackSawRsp_UpdateStatus_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   uint8_t *arg2 = (uint8_t *) 0 ;
   uint32_t arg3 ;
@@ -3850,7 +4025,7 @@ intgo _wrap_unpackSawRsp_UpdateStatus_matrixCommon_086ff6444b79a7ba(void *_swig_
 }
 
 
-intgo _wrap_Pack_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go_1, intgo _swig_go_2, void *_swig_go_3) {
+intgo _wrap_Pack_matrixCommon_3aecc8aaebb3a2cf(char *_swig_go_0, intgo *_swig_go_1, intgo _swig_go_2, void *_swig_go_3) {
   uint8_t *arg1 = (uint8_t *) 0 ;
   uint32_t *arg2 = (uint32_t *) 0 ;
   enum Cmd arg3 ;
@@ -3869,7 +4044,7 @@ intgo _wrap_Pack_matrixCommon_086ff6444b79a7ba(char *_swig_go_0, intgo *_swig_go
 }
 
 
-intgo _wrap_Unpack_matrixCommon_086ff6444b79a7ba(void *_swig_go_0, enum Cmd *_swig_go_1, char *_swig_go_2, intgo _swig_go_3) {
+intgo _wrap_Unpack_matrixCommon_3aecc8aaebb3a2cf(void *_swig_go_0, enum Cmd *_swig_go_1, char *_swig_go_2, intgo _swig_go_3) {
   void *arg1 = (void *) 0 ;
   enum Cmd *arg2 = (enum Cmd *) 0 ;
   uint8_t *arg3 = (uint8_t *) 0 ;

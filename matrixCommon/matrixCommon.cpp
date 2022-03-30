@@ -216,8 +216,8 @@ int packStructReq_SetSn(uint8_t *out, uint32_t *len, void *sIn) {
 
     int index = 0;
 
-    for (auto iter:sReqSetSn->sn) {
-        out[index] = iter;
+    for (int i = 0; i < ARRAY_SIZE(sReqSetSn->sn); i++) {
+        out[index] = sReqSetSn->sn[i];
         index++;
     }
 
@@ -272,8 +272,8 @@ int packStructRsp_GetNetSn(uint8_t *out, uint32_t *len, void *sIn) {
     memcpy(out + index, &value32B, sizeof(value32B));
     index += sizeof(value32B);
 
-    for (auto iter:sRspGetNetSn->sn) {
-        out[index] = iter;
+    for (int i = 0; i < ARRAY_SIZE(sRspGetNetSn->sn); i++) {
+        out[index] = sRspGetNetSn->sn[i];
         index++;
     }
 
@@ -328,8 +328,8 @@ int packStructRsp_GetNet(uint8_t *out, uint32_t *len, void *sIn) {
     memcpy(out + index, &value32B, sizeof(value32B));
     index += sizeof(value32B);
 
-    for (auto iter:sRspGetNet->mac) {
-        out[index] = iter;
+    for (int i = 0; i < ARRAY_SIZE(sRspGetNet->mac); i++) {
+        out[index] = sRspGetNet->mac[i];
         index++;
     }
 
@@ -887,8 +887,8 @@ int unpackSawReq_SetSn(void *sOut, uint8_t *in, uint32_t len) {
 
     int index = 0;
 
-    for (auto iter:sReqSetSn->sn) {
-        iter = in[index];
+    for (int i = 0; i < ARRAY_SIZE(sReqSetSn->sn); i++) {
+        sReqSetSn->sn[i] = in[index];
         index++;
     }
 
@@ -935,8 +935,8 @@ int unpackSawRsp_GetNetSn(void *sOut, uint8_t *in, uint32_t len) {
     index += sizeof(value32B);
     sRspGetNetSn->ip = reverse32(value32B);
 
-    for (auto iter:sRspGetNetSn->sn) {
-        iter = in[index];
+    for (int i = 0; i < ARRAY_SIZE(sRspGetNetSn->sn); i++) {
+        sRspGetNetSn->sn[i] = in[index];
         index++;
     }
 
@@ -983,8 +983,8 @@ int unpackSawRsp_GetNet(void *sOut, uint8_t *in, uint32_t len) {
     index += sizeof(value32B);
     sRspGetNet->ip = reverse32(value32B);
 
-    for (auto iter:sRspGetNet->mac) {
-        iter = in[index];
+    for (int i = 0; i < ARRAY_SIZE(sRspGetNet->mac); i++) {
+        sRspGetNet->mac[i] = in[index];
         index++;
     }
 
@@ -1239,8 +1239,8 @@ int unpackSawReq_UpdateData(void *sOut, uint8_t *in, uint32_t len) {
 
     int index = 0;
 
-    for (auto iter:sReqUpdateData->data) {
-        iter = in[index];
+    for (int i = 0; i < len; i++) {
+        sReqUpdateData->data.push_back(in[index]);
         index++;
     }
 
