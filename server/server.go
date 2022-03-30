@@ -1,6 +1,7 @@
 package server
 
 import (
+	"NXProductionTest/matrixControl"
 	"fmt"
 	"net"
 	"strconv"
@@ -11,6 +12,9 @@ type Server struct {
 	localClients map[net.Conn]*LocalClient //客户端数组
 	Port         int16                     //服务端端口
 	run          bool
+	Listener     *net.TCPListener
+	//连接矩阵控制器的客户端
+	matrixClient matrixControl.ClientMatrixControl
 }
 
 func (s *Server) AddClient(c *LocalClient) {
@@ -30,6 +34,14 @@ func (s *Server) handlerClient(c *LocalClient) {
 	c.Process()
 }
 
+func (s *Server) OpenMatrixClient() {
+	s.matrixClient.Open()
+}
+
+func (s *Server) CloseMatrixClient() {
+	s.matrixClient.Close()
+}
+
 func (s *Server) Run(port int16) error {
 	addr := ":" + strconv.Itoa(int(port))
 	tcpAddr, err := net.ResolveTCPAddr("tcp", addr)
@@ -37,8 +49,8 @@ func (s *Server) Run(port int16) error {
 		fmt.Println("tcp server get addr err:", err.Error())
 		return err
 	}
-	listener, errListen := net.ListenTCP("tcp", tcpAddr)
-	defer listener.Close()
+	var errListen error
+	s.Listener, errListen = net.ListenTCP("tcp", tcpAddr)
 	if errListen != nil {
 		fmt.Println("tcp server listen err:", err.Error())
 		return err
@@ -47,14 +59,16 @@ func (s *Server) Run(port int16) error {
 	fmt.Println("server start success at port:", port)
 	s.run = true
 	s.localClients = make(map[net.Conn]*LocalClient)
+	//TODO 先获取控制板ip信息，设置clientMatrix的ip port 再打开客户端连接
+	go s.OpenMatrixClient()
 	go s.Monitor()
 	for {
-		conn, errAccept := listener.Accept()
+		conn, errAccept := s.Listener.Accept()
 		if errAccept != nil {
 			continue
 		}
 		c := new(LocalClient)
-		c.New(conn, tmpSize, rbSize)
+		c.New(s, conn, tmpSize, rbSize)
 		s.AddClient(c)
 		go s.handlerClient(c)
 	}
@@ -73,4 +87,11 @@ func (s *Server) Monitor() {
 			}
 		}
 	}
+}
+
+func (s *Server) Close() {
+	s.Listener.Close()
+	s.matrixClient.Close()
+	s.localClients = nil
+
 }

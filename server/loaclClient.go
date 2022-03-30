@@ -39,6 +39,7 @@ type Pkg struct {
 
 type LocalClient struct {
 	run    bool
+	server *Server
 	conn   net.Conn
 	tmpBuf []byte                 //一次接收的缓存
 	tmpLen int                    //一次接收的长度
@@ -50,7 +51,8 @@ type LocalClient struct {
 	pkgs   chan Pkg
 }
 
-func (c *LocalClient) New(conn net.Conn, tmpSize int, rbSize int) {
+func (c *LocalClient) New(server *Server, conn net.Conn, tmpSize int, rbSize int) {
+	c.server = server
 	c.run = true
 	c.conn = conn
 	c.tmpBuf = make([]byte, tmpSize)

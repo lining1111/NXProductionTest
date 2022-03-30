@@ -6,6 +6,8 @@ import (
 	"unsafe"
 )
 
+const MaxBufSize = 4096
+
 // Head 帧头
 type Head struct {
 	Start uint8
@@ -13,9 +15,81 @@ type Head struct {
 	Len   uint8
 }
 
+func (h *Head) Pack() ([]byte, error) {
+	head := matrixCommon.NewHead()
+	defer matrixCommon.DeleteHead(head)
+	//赋值
+	head.SetStart(h.Start)
+	head.SetCmd(h.Cmd)
+	head.SetLen(h.Len)
+	//转换
+	buf := make([]byte, MaxBufSize)
+	bufLen := uint(0)
+
+	ret := matrixCommon.PackStructHead(&buf[0], &bufLen, head)
+	if ret != 0 {
+		return nil, errors.New("转换失败")
+	} else {
+		return buf[0:bufLen], nil
+	}
+}
+
+func (h *Head) Unpack(in []byte) error {
+	if len(in) >= 3 {
+		head := matrixCommon.NewHead()
+		defer matrixCommon.DeleteHead(head)
+		bufPtr := &in[0]
+		bufLen := uint(len(in))
+		//转换
+		ret := matrixCommon.UnpackSawHead(head, bufPtr, bufLen)
+		if ret != 0 {
+			return errors.New("获取失败")
+		}
+		//赋值
+		h.Start = head.GetStart()
+		h.Cmd = head.GetCmd()
+		h.Len = head.GetLen()
+		return nil
+	} else {
+		return errors.New("not enough len")
+	}
+}
+
 // Crc 校验和
 type Crc struct {
 	Data uint8
+}
+
+func (c *Crc) Pack() ([]byte, error) {
+	crc := matrixCommon.NewCrc()
+	defer matrixCommon.DeleteCrc(crc)
+	//赋值
+	crc.SetData(c.Data)
+	//转换
+	buf := make([]byte, MaxBufSize)
+	bufLen := uint(0)
+
+	ret := matrixCommon.PackStructCrc(&buf[0], &bufLen, crc)
+	if ret != 0 {
+		return nil, errors.New("转换失败")
+	} else {
+		return buf[0:bufLen], nil
+	}
+}
+
+func (c *Crc) Unpack(in []byte) error {
+	crc := matrixCommon.NewCrc()
+	defer matrixCommon.DeleteCrc(crc)
+	bufPtr := &in[0]
+	bufLen := uint(len(in))
+	//转换
+	ret := matrixCommon.UnpackSawCrc(crc, bufPtr, bufLen)
+	if ret != 0 {
+		return errors.New("获取失败")
+	}
+	//赋值
+	c.Data = crc.GetData()
+	return nil
 }
 
 // Heart 心跳帧 0xa0
@@ -41,230 +115,6 @@ type Heart struct {
 	Version uint16 //版本号
 }
 
-// Req_SetSwitch 交换机重启/加热、远程升级帧 0xb2
-type Req_SetSwitch struct {
-	Heat1           uint8 //1（加热1启动）0（加热1停止）
-	Heat2           uint8 //1（加热2启动）0（加热2停止
-	Reboot          uint8 //交换机重启（1使能）
-	EnterBootloader uint8 //更新程序进入bootloader（1使能）注意：要在开机两分钟后的时段使用(等待一秒钟,重新连接等待心跳.)远程升级命令
-	ResetAngle      uint8 //复位角度（1使能）
-}
-
-// Req_SetFun 设置风扇开关 0xba
-type Req_SetFun struct {
-	On uint8 //1(风扇使能) 0（风扇失能）
-}
-
-// Req_SetIp 设置矩阵控制器IP 0xb6
-type Req_SetIp struct {
-	Ip uint32 //192.168.100.5--->C0A86405
-}
-
-// Req_SetNet 设置矩阵控制器网络参数 0xbb
-type Req_SetNet struct {
-	Gateway uint32 //192.168.100.1--->C0A86401
-	Mask    uint32 //255.255.255.0--->FFFFFF00
-	Ip      uint32 //192.168.100.5--->C0A86405
-}
-
-// Req_SetSn 设置矩阵控制器SN参数 0xbe
-type Req_SetSn struct {
-	Sn [32]uint8 //sn号（32字节）
-}
-
-// Req_GetNetSn 读取矩阵控制器SN和网络参数 0xbc
-type Req_GetNetSn struct {
-	Data uint8 //0X01固定（1字节）
-}
-
-// Rsp_GetNetSn 读取矩阵控制器SN和网络参数 0xac
-type Rsp_GetNetSn struct {
-	Gateway uint32    //192.168.100.1--->C0A86401
-	Mask    uint32    //255.255.255.0--->FFFFFF00
-	Ip      uint32    //192.168.100.5--->C0A86405
-	Sn      [32]uint8 //sn
-}
-
-// Req_GetNet 读取局域网内矩阵控制器网络参数 0xbd
-type Req_GetNet struct {
-	Data uint8 //0X01固定（1字节）
-}
-
-// Rsp_GetNet 读取局域网内矩阵控制器网络参数 0xad
-type Rsp_GetNet struct {
-	Gateway  uint32 //192.168.100.1--->C0A86401
-	Mask     uint32 //255.255.255.0--->FFFFFF00
-	Ip       uint32 //192.168.100.5--->C0A86405
-	Mac      [6]uint8
-	RemoteIp uint32 //目标IP（4个字节）
-}
-
-// Req_SetLightThreshold 设置补光灯光敏开关阀值 0xbf
-type Req_SetLightThreshold struct {
-	ThresholdOn  uint16 //光敏开启阀值
-	ThresholdOff uint16 //光敏关闭阀值
-}
-
-// Rsp_SetLightThreshold 设置补光灯光敏开关阀值 0xaf
-type Rsp_SetLightThreshold struct {
-	FarBrightness  uint8  //远灯亮度
-	MidBrightness  uint8  //中灯亮度
-	NearBrightness uint8  //近灯亮度
-	ThresholdOn    uint16 //光敏开启阀值
-	ThresholdOff   uint16 //光敏关闭阀值
-	DeviceType     uint8  //设备型号55单组灯，33三组灯
-	LightStatus    uint8  //单组补光灯状态
-}
-
-// Req_SetLightOn 设置单组补光灯开关 0xb8
-type Req_SetLightOn struct {
-	Status uint8 //1：补光灯开，0：补光灯关
-}
-
-// Rsp_SetLightOn 设置单组补光灯开关 0xa8
-type Rsp_SetLightOn struct {
-	Status uint8 //1：补光灯开，0：补光灯关
-}
-
-// Req_SetLightBrightness 设置三组补光灯光敏亮度值 0xb7
-type Req_SetLightBrightness struct {
-	FarBrightness  uint8 //远灯亮度
-	MidBrightness  uint8 //中灯亮度
-	NearBrightness uint8 //近灯亮度
-}
-
-// Rsp_SetLightBrightness 设置补光灯光敏开关阀值 0xa7
-type Rsp_SetLightBrightness struct {
-	FarBrightness  uint8  //远灯亮度
-	MidBrightness  uint8  //中灯亮度
-	NearBrightness uint8  //近灯亮度
-	ThresholdOn    uint16 //光敏开启阀值
-	ThresholdOff   uint16 //光敏关闭阀值
-	DeviceType     uint8  //设备型号55单组灯，33三组灯
-	LightStatus    uint8  //单组补光灯状态
-}
-
-// Req_GetLightPara 读取补光等信息 0xb9
-type Req_GetLightPara struct {
-	Data uint8 //0X01固定
-}
-
-// Rsp_GetLightPara 读取补光等信息 0xa9
-type Rsp_GetLightPara struct {
-	FarLightBrightness  uint8  //远灯亮度
-	FarLightOn          uint8  //状态，1开0关
-	MidLightBrightness  uint8  //远灯亮度
-	MidLightOn          uint8  //状态，1开0关
-	NearLightBrightness uint8  //远灯亮度
-	NearLightOn         uint8  //状态，1开0关
-	DeviceType          uint8  //设备型号（55 单组灯，33三组灯）判断是否00 如果00告知用户未接入补光灯
-	ThresholdOn         uint16 //光敏开启阀值
-	ThresholdOff        uint16 //光敏关闭阀值
-}
-
-/* *
- * 网络升级需要上位机发功能码0xB2的指令，矩阵控制器会断开tcp连接，在重新建立一次tcp连接（网络参数不变）。
- * 需要上位机再次连接到矩阵控制。连接成功后，矩阵控制器会每2s发送一次两个#字符（##）等待上位机升级操作，上位机收到字符##后可以进行升级操作
- * 升级说明 上位机发送0xb4 0xb5 依次返回0xa4 0xa5 0xa2
- * */
-
-// Req_UpdateDataSize 矩阵控制器网络升级包数据大小 0xb4
-type Req_UpdateDataSize struct {
-	TotalLen uint32 //总更新包大小
-}
-
-// Rsp_UpdateDataSize 矩阵控制器网络升级包数据大小 0xa4
-type Rsp_UpdateDataSize struct {
-	TotalLen uint32 //总更新包大小
-}
-
-// Req_UpdateData 0xb5
-type Req_UpdateData struct {
-	Data []uint8
-}
-
-// Rsp_UpdateData 0xa5
-type Rsp_UpdateData struct {
-	EachLen uint32 //每帧更新包大小
-}
-
-// Rsp_UpdateStatus 0xa2
-type Rsp_UpdateStatus struct {
-	Status uint32 //第四个字节0：更新未成功。第四个字节1：更新成功。第一到三字节为00。注：当矩阵控制器收到不合法时序也会返回此指令。
-}
-
-func (h *Head) Pack() ([]byte, error) {
-	head := matrixCommon.NewHead()
-	defer matrixCommon.DeleteHead(head)
-	//赋值
-	head.SetStart(h.Start)
-	head.SetCmd(h.Cmd)
-	head.SetLen(h.Len)
-	//转换
-	buf := make([]byte, 4096)
-	bufLen := uint(0)
-
-	ret := matrixCommon.PackStructHead(&buf[0], &bufLen, head)
-	if ret != 0 {
-		return nil, errors.New("转换失败")
-	} else {
-		return buf, nil
-	}
-}
-
-func (h *Head) Unpack(in []byte) error {
-	if len(in) >= 3 {
-		head := matrixCommon.NewHead()
-		defer matrixCommon.DeleteHead(head)
-		bufPtr := &in[0]
-		bufLen := uint(len(in))
-		//转换
-		ret := matrixCommon.UnpackSawHead(head, bufPtr, bufLen)
-		if ret != 0 {
-			return errors.New("获取失败")
-		}
-		//赋值
-		h.Start = head.GetStart()
-		h.Cmd = head.GetCmd()
-		h.Len = head.GetLen()
-		return nil
-	} else {
-		return errors.New("not enough len")
-	}
-}
-
-func (c *Crc) Pack() ([]byte, error) {
-	crc := matrixCommon.NewCrc()
-	defer matrixCommon.DeleteCrc(crc)
-	//赋值
-	crc.SetData(c.Data)
-	//转换
-	buf := make([]byte, 4096)
-	bufLen := uint(0)
-
-	ret := matrixCommon.PackStructCrc(&buf[0], &bufLen, crc)
-	if ret != 0 {
-		return nil, errors.New("转换失败")
-	} else {
-		return buf, nil
-	}
-}
-
-func (c *Crc) Unpack(in []byte) error {
-	crc := matrixCommon.NewCrc()
-	defer matrixCommon.DeleteCrc(crc)
-	bufPtr := &in[0]
-	bufLen := uint(len(in))
-	//转换
-	ret := matrixCommon.UnpackSawCrc(crc, bufPtr, bufLen)
-	if ret != 0 {
-		return errors.New("获取失败")
-	}
-	//赋值
-	c.Data = crc.GetData()
-	return nil
-}
-
 func (h *Heart) Pack() ([]byte, error) {
 	heart := matrixCommon.NewS_Heart()
 	defer matrixCommon.DeleteS_Heart(heart)
@@ -278,14 +128,14 @@ func (h *Heart) Pack() ([]byte, error) {
 	heart.SetAlarmStatus(h.AlarmStatus)
 	heart.SetVersion(h.Version)
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructHeart(&buf[0], &bufLen, heart.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -311,6 +161,15 @@ func (h *Heart) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetSwitch 交换机重启/加热、远程升级帧 0xb2
+type Req_SetSwitch struct {
+	Heat1           uint8 //1（加热1启动）0（加热1停止）
+	Heat2           uint8 //1（加热2启动）0（加热2停止
+	Reboot          uint8 //交换机重启（1使能）
+	EnterBootloader uint8 //更新程序进入bootloader（1使能）注意：要在开机两分钟后的时段使用(等待一秒钟,重新连接等待心跳.)远程升级命令
+	ResetAngle      uint8 //复位角度（1使能）
+}
+
 func (r *Req_SetSwitch) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetSwitch()
 	defer matrixCommon.DeleteS_Req_SetSwitch(req)
@@ -321,14 +180,14 @@ func (r *Req_SetSwitch) Pack() ([]byte, error) {
 	req.SetEnterBootloader(r.EnterBootloader)
 	req.SetResetAngle(r.ResetAngle)
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetSwitch(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -351,20 +210,25 @@ func (r *Req_SetSwitch) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetFun 设置风扇开关 0xba
+type Req_SetFun struct {
+	On uint8 //1(风扇使能) 0（风扇失能）
+}
+
 func (r *Req_SetFun) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetFun()
 	defer matrixCommon.DeleteS_Req_SetFun(req)
 	//赋值
 	req.SetOn(r.On)
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetFun(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -383,20 +247,25 @@ func (r *Req_SetFun) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetIp 设置矩阵控制器IP 0xb6
+type Req_SetIp struct {
+	Ip uint32 //192.168.100.5--->C0A86405
+}
+
 func (r *Req_SetIp) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetIp()
 	defer matrixCommon.DeleteS_Req_SetIp(req)
 	//赋值
 	req.SetIp(uint(r.Ip))
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetIp(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -415,6 +284,13 @@ func (r *Req_SetIp) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetNet 设置矩阵控制器网络参数 0xbb
+type Req_SetNet struct {
+	Gateway uint32 //192.168.100.1--->C0A86401
+	Mask    uint32 //255.255.255.0--->FFFFFF00
+	Ip      uint32 //192.168.100.5--->C0A86405
+}
+
 func (r *Req_SetNet) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetNet()
 	defer matrixCommon.DeleteS_Req_SetNet(req)
@@ -423,14 +299,14 @@ func (r *Req_SetNet) Pack() ([]byte, error) {
 	req.SetMask(uint(r.Mask))
 	req.SetIp(uint(r.Ip))
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetNet(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -451,13 +327,18 @@ func (r *Req_SetNet) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetSn 设置矩阵控制器SN参数 0xbe
+type Req_SetSn struct {
+	Sn [32]uint8 //sn号（32字节）
+}
+
 func (r *Req_SetSn) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetSn()
 	defer matrixCommon.DeleteS_Req_SetSn(req)
 	//赋值
 	req.SetSn(&r.Sn[0])
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetSn(&buf[0], &bufLen, req.Swigcptr())
@@ -487,20 +368,25 @@ func (r *Req_SetSn) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_GetNetSn 读取矩阵控制器SN和网络参数 0xbc
+type Req_GetNetSn struct {
+	Data uint8 //0X01固定（1字节）
+}
+
 func (r *Req_GetNetSn) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_GetNetSn()
 	defer matrixCommon.DeleteS_Req_GetNetSn(req)
 	//赋值
 	req.SetData(r.Data)
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_GetNetSn(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -520,48 +406,61 @@ func (r *Req_GetNetSn) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_GetNetSn 读取矩阵控制器SN和网络参数 0xac
+type Rsp_GetNetSn struct {
+	Gateway uint32    //192.168.100.1--->C0A86401
+	Mask    uint32    //255.255.255.0--->FFFFFF00
+	Ip      uint32    //192.168.100.5--->C0A86405
+	Sn      [32]uint8 //sn
+}
+
 func (r *Rsp_GetNetSn) Pack() ([]byte, error) {
-	req := matrixCommon.NewS_Rsp_GetNetSn()
-	defer matrixCommon.DeleteS_Rsp_GetNetSn(req)
+	rsp := matrixCommon.NewS_Rsp_GetNetSn()
+	defer matrixCommon.DeleteS_Rsp_GetNetSn(rsp)
 	//赋值
-	req.SetGateway(uint(r.Gateway))
-	req.SetMask(uint(r.Mask))
-	req.SetIp(uint(r.Ip))
-	req.SetSn(&r.Sn[0])
+	rsp.SetGateway(uint(r.Gateway))
+	rsp.SetMask(uint(r.Mask))
+	rsp.SetIp(uint(r.Ip))
+	rsp.SetSn(&r.Sn[0])
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
-	ret := matrixCommon.PackStructRsp_GetNetSn(&buf[0], &bufLen, req.Swigcptr())
+	ret := matrixCommon.PackStructRsp_GetNetSn(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
 func (r *Rsp_GetNetSn) Unpack(in []byte) error {
-	req := matrixCommon.NewS_Rsp_GetNetSn()
-	defer matrixCommon.DeleteS_Rsp_GetNetSn(req)
+	rsp := matrixCommon.NewS_Rsp_GetNetSn()
+	defer matrixCommon.DeleteS_Rsp_GetNetSn(rsp)
 	bufPtr := &in[0]
 	bufLen := uint(len(in))
 	//转换
-	ret := matrixCommon.UnpackSawRsp_GetNetSn(req.Swigcptr(), bufPtr, bufLen)
+	ret := matrixCommon.UnpackSawRsp_GetNetSn(rsp.Swigcptr(), bufPtr, bufLen)
 	if ret != 0 {
 		return errors.New("获取失败")
 	}
 	//赋值
-	r.Gateway = uint32(req.GetGateway())
-	r.Mask = uint32(req.GetMask())
-	r.Ip = uint32(req.GetIp())
+	r.Gateway = uint32(rsp.GetGateway())
+	r.Mask = uint32(rsp.GetMask())
+	r.Ip = uint32(rsp.GetIp())
 
-	ptr := uintptr(unsafe.Pointer(req.GetSn()))
+	ptr := uintptr(unsafe.Pointer(rsp.GetSn()))
 	for i := 0; i < len(r.Sn); i++ {
 		r.Sn[i] = *(*uint8)(unsafe.Pointer(ptr + uintptr(i)))
 	}
 
 	return nil
+}
+
+// Req_GetNet 读取局域网内矩阵控制器网络参数 0xbd
+type Req_GetNet struct {
+	Data uint8 //0X01固定（1字节）
 }
 
 func (r *Req_GetNet) Pack() ([]byte, error) {
@@ -570,14 +469,14 @@ func (r *Req_GetNet) Pack() ([]byte, error) {
 	//赋值
 	req.SetData(r.Data)
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_GetNet(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -597,6 +496,15 @@ func (r *Req_GetNet) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_GetNet 读取局域网内矩阵控制器网络参数 0xad
+type Rsp_GetNet struct {
+	Gateway  uint32 //192.168.100.1--->C0A86401
+	Mask     uint32 //255.255.255.0--->FFFFFF00
+	Ip       uint32 //192.168.100.5--->C0A86405
+	Mac      [6]uint8
+	RemoteIp uint32 //目标IP（4个字节）
+}
+
 func (r *Rsp_GetNet) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_GetNet()
 	defer matrixCommon.DeleteS_Rsp_GetNet(rsp)
@@ -608,14 +516,14 @@ func (r *Rsp_GetNet) Pack() ([]byte, error) {
 	rsp.SetRemoteIp(uint(r.RemoteIp))
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_GetNet(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -644,6 +552,12 @@ func (r *Rsp_GetNet) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetLightThreshold 设置补光灯光敏开关阀值 0xbf
+type Req_SetLightThreshold struct {
+	ThresholdOn  uint16 //光敏开启阀值
+	ThresholdOff uint16 //光敏关闭阀值
+}
+
 func (r *Req_SetLightThreshold) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetLightThreshold()
 	defer matrixCommon.DeleteS_Req_SetLightThreshold(req)
@@ -652,14 +566,14 @@ func (r *Req_SetLightThreshold) Pack() ([]byte, error) {
 	req.SetThresholdOff(r.ThresholdOff)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetLightThreshold(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -680,6 +594,17 @@ func (r *Req_SetLightThreshold) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_SetLightThreshold 设置补光灯光敏开关阀值 0xaf
+type Rsp_SetLightThreshold struct {
+	FarBrightness  uint8  //远灯亮度
+	MidBrightness  uint8  //中灯亮度
+	NearBrightness uint8  //近灯亮度
+	ThresholdOn    uint16 //光敏开启阀值
+	ThresholdOff   uint16 //光敏关闭阀值
+	DeviceType     uint8  //设备型号55单组灯，33三组灯
+	LightStatus    uint8  //单组补光灯状态
+}
+
 func (r *Rsp_SetLightThreshold) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_SetLightThreshold()
 	defer matrixCommon.DeleteS_Rsp_SetLightThreshold(rsp)
@@ -693,14 +618,14 @@ func (r *Rsp_SetLightThreshold) Pack() ([]byte, error) {
 	rsp.SetLightStatus(r.LightStatus)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_SetLightThreshold(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -726,6 +651,11 @@ func (r *Rsp_SetLightThreshold) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetLightOn 设置单组补光灯开关 0xb8
+type Req_SetLightOn struct {
+	Status uint8 //1：补光灯开，0：补光灯关
+}
+
 func (r *Req_SetLightOn) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetLightOn()
 	defer matrixCommon.DeleteS_Req_SetLightOn(req)
@@ -733,14 +663,14 @@ func (r *Req_SetLightOn) Pack() ([]byte, error) {
 	req.SetStatus(r.Status)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetLightOn(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -760,6 +690,11 @@ func (r *Req_SetLightOn) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_SetLightOn 设置单组补光灯开关 0xa8
+type Rsp_SetLightOn struct {
+	Status uint8 //1：补光灯开，0：补光灯关
+}
+
 func (r *Rsp_SetLightOn) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_SetLightOn()
 	defer matrixCommon.DeleteS_Rsp_SetLightOn(rsp)
@@ -767,14 +702,14 @@ func (r *Rsp_SetLightOn) Pack() ([]byte, error) {
 	rsp.SetStatus(r.Status)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_SetLightOn(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -794,6 +729,13 @@ func (r *Rsp_SetLightOn) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_SetLightBrightness 设置三组补光灯光敏亮度值 0xb7
+type Req_SetLightBrightness struct {
+	FarBrightness  uint8 //远灯亮度
+	MidBrightness  uint8 //中灯亮度
+	NearBrightness uint8 //近灯亮度
+}
+
 func (r *Req_SetLightBrightness) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_SetLightBrightness()
 	defer matrixCommon.DeleteS_Req_SetLightBrightness(req)
@@ -803,14 +745,14 @@ func (r *Req_SetLightBrightness) Pack() ([]byte, error) {
 	req.SetNearBrightness(r.NearBrightness)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_SetLightBrightness(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -832,6 +774,17 @@ func (r *Req_SetLightBrightness) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_SetLightBrightness 设置补光灯光敏开关阀值 0xa7
+type Rsp_SetLightBrightness struct {
+	FarBrightness  uint8  //远灯亮度
+	MidBrightness  uint8  //中灯亮度
+	NearBrightness uint8  //近灯亮度
+	ThresholdOn    uint16 //光敏开启阀值
+	ThresholdOff   uint16 //光敏关闭阀值
+	DeviceType     uint8  //设备型号55单组灯，33三组灯
+	LightStatus    uint8  //单组补光灯状态
+}
+
 func (r *Rsp_SetLightBrightness) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_SetLightBrightness()
 	defer matrixCommon.DeleteS_Rsp_SetLightBrightness(rsp)
@@ -845,14 +798,14 @@ func (r *Rsp_SetLightBrightness) Pack() ([]byte, error) {
 	rsp.SetLightStatus(r.LightStatus)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_SetLightBrightness(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -878,6 +831,11 @@ func (r *Rsp_SetLightBrightness) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_GetLightPara 读取补光等信息 0xb9
+type Req_GetLightPara struct {
+	Data uint8 //0X01固定
+}
+
 func (r *Req_GetLightPara) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_GetLightPara()
 	defer matrixCommon.DeleteS_Req_GetLightPara(req)
@@ -885,14 +843,14 @@ func (r *Req_GetLightPara) Pack() ([]byte, error) {
 	req.SetData(r.Data)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_GetLightPara(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -912,6 +870,19 @@ func (r *Req_GetLightPara) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_GetLightPara 读取补光等信息 0xa9
+type Rsp_GetLightPara struct {
+	FarLightBrightness  uint8  //远灯亮度
+	FarLightOn          uint8  //状态，1开0关
+	MidLightBrightness  uint8  //远灯亮度
+	MidLightOn          uint8  //状态，1开0关
+	NearLightBrightness uint8  //远灯亮度
+	NearLightOn         uint8  //状态，1开0关
+	DeviceType          uint8  //设备型号（55 单组灯，33三组灯）判断是否00 如果00告知用户未接入补光灯
+	ThresholdOn         uint16 //光敏开启阀值
+	ThresholdOff        uint16 //光敏关闭阀值
+}
+
 func (r *Rsp_GetLightPara) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_GetLightPara()
 	defer matrixCommon.DeleteS_Rsp_GetLightPara(rsp)
@@ -927,14 +898,14 @@ func (r *Rsp_GetLightPara) Pack() ([]byte, error) {
 	rsp.SetThresholdOff(r.ThresholdOff)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_GetLightPara(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -962,6 +933,17 @@ func (r *Rsp_GetLightPara) Unpack(in []byte) error {
 	return nil
 }
 
+/* *
+ * 网络升级需要上位机发功能码0xB2的指令，矩阵控制器会断开tcp连接，在重新建立一次tcp连接（网络参数不变）。
+ * 需要上位机再次连接到矩阵控制。连接成功后，矩阵控制器会每2s发送一次两个#字符（##）等待上位机升级操作，上位机收到字符##后可以进行升级操作
+ * 升级说明 上位机发送0xb4 0xb5 依次返回0xa4 0xa5 0xa2
+ * */
+
+// Req_UpdateDataSize 矩阵控制器网络升级包数据大小 0xb4
+type Req_UpdateDataSize struct {
+	TotalLen uint32 //总更新包大小
+}
+
 func (r *Req_UpdateDataSize) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_UpdateDataSize()
 	defer matrixCommon.DeleteS_Req_UpdateDataSize(req)
@@ -969,14 +951,14 @@ func (r *Req_UpdateDataSize) Pack() ([]byte, error) {
 	req.SetTotalLen(uint(r.TotalLen))
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_UpdateDataSize(&buf[0], &bufLen, req.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -996,6 +978,11 @@ func (r *Req_UpdateDataSize) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_UpdateDataSize 矩阵控制器网络升级包数据大小 0xa4
+type Rsp_UpdateDataSize struct {
+	TotalLen uint32 //总更新包大小
+}
+
 func (r *Rsp_UpdateDataSize) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_UpdateDataSize()
 	defer matrixCommon.DeleteS_Rsp_UpdateDataSize(rsp)
@@ -1003,14 +990,14 @@ func (r *Rsp_UpdateDataSize) Pack() ([]byte, error) {
 	rsp.SetTotalLen(uint(r.TotalLen))
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_UpdateDataSize(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -1030,6 +1017,11 @@ func (r *Rsp_UpdateDataSize) Unpack(in []byte) error {
 	return nil
 }
 
+// Req_UpdateData 0xb5
+type Req_UpdateData struct {
+	Data []uint8
+}
+
 func (r *Req_UpdateData) Pack() ([]byte, error) {
 	req := matrixCommon.NewS_Req_UpdateData()
 	defer matrixCommon.DeleteS_Req_UpdateData(req)
@@ -1042,7 +1034,7 @@ func (r *Req_UpdateData) Pack() ([]byte, error) {
 	req.SetData(arr)
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructReq_UpdateData(&buf[0], &bufLen, req.Swigcptr())
@@ -1073,6 +1065,11 @@ func (r *Req_UpdateData) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_UpdateData 0xa5
+type Rsp_UpdateData struct {
+	EachLen uint32 //每帧更新包大小
+}
+
 func (r *Rsp_UpdateData) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_UpdateData()
 	defer matrixCommon.DeleteS_Rsp_UpdateData(rsp)
@@ -1080,14 +1077,14 @@ func (r *Rsp_UpdateData) Pack() ([]byte, error) {
 	rsp.SetEachLen(uint(r.EachLen))
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_UpdateData(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 
@@ -1107,6 +1104,11 @@ func (r *Rsp_UpdateData) Unpack(in []byte) error {
 	return nil
 }
 
+// Rsp_UpdateStatus 0xa2
+type Rsp_UpdateStatus struct {
+	Status uint32 //第四个字节0：更新未成功。第四个字节1：更新成功。第一到三字节为00。注：当矩阵控制器收到不合法时序也会返回此指令。
+}
+
 func (r *Rsp_UpdateStatus) Pack() ([]byte, error) {
 	rsp := matrixCommon.NewS_Rsp_UpdateStatus()
 	defer matrixCommon.DeleteS_Rsp_UpdateStatus(rsp)
@@ -1114,14 +1116,14 @@ func (r *Rsp_UpdateStatus) Pack() ([]byte, error) {
 	rsp.SetStatus(uint(r.Status))
 
 	//转换
-	buf := make([]byte, 4096)
+	buf := make([]byte, MaxBufSize)
 	bufLen := uint(0)
 
 	ret := matrixCommon.PackStructRsp_UpdateStatus(&buf[0], &bufLen, rsp.Swigcptr())
 	if ret != 0 {
 		return nil, errors.New("转换失败")
 	} else {
-		return buf, nil
+		return buf[0:bufLen], nil
 	}
 }
 

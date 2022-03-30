@@ -7,11 +7,13 @@ import (
 
 var conn *net.UDPConn
 
-func init() {
-	conn, _ = net.DialUDP("udp", nil, &net.UDPAddr{
+func Open(port int) error {
+	var err error
+	conn, err = net.DialUDP("udp", nil, &net.UDPAddr{
 		IP:   net.IPv4(255, 255, 255, 255),
-		Port: 3000,
+		Port: port,
 	})
+	return err
 }
 
 func BroadCast(content string) {
