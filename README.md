@@ -7,7 +7,7 @@
 
 ## 编译 win64 exe
 
-    //sudo apt-get install gcc-mingw-w64
+    //sudo apt-get install gcc-mingw-w64 g++-mingw-w64
     CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc AR=X86_64-w64-ming32-ar CXX=X86_64-w64-ming32-g++ CGO_CXXFLAGS="-g -O2 -std=c++11" go build
 
 ## 编译arm64

@@ -16,12 +16,12 @@ func Open(port int) error {
 	return err
 }
 
-func BroadCast(content string) {
+func BroadCast(content []byte) {
 	if conn != nil {
 		go func() {
 			for true {
 				time.Sleep(time.Duration(10) * time.Second) //10s sleep
-				conn.Write([]byte(content))
+				conn.Write(content)
 			}
 		}()
 	}

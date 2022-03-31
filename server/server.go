@@ -60,7 +60,15 @@ func (s *Server) Run(port int16) error {
 	s.run = true
 	s.localClients = make(map[net.Conn]*LocalClient)
 	//TODO 先获取控制板ip信息，设置clientMatrix的ip port 再打开客户端连接
-	go s.OpenMatrixClient()
+	go func() {
+		fmt.Println("开始连接矩阵控制器")
+		s.matrixClient.GetMatrixIp()
+		if s.matrixClient.Ip != "" {
+			s.OpenMatrixClient()
+		} else {
+			fmt.Println("获取矩阵控制器ip失败")
+		}
+	}()
 	go s.Monitor()
 	for {
 		conn, errAccept := s.Listener.Accept()

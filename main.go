@@ -25,18 +25,22 @@ func main() {
 		defer wg.Done()
 		//获取ip
 		localNet, err := common.GetLocalNet()
+		var broadcastBytes []byte
 		if err != nil {
 			fmt.Println(err)
-			fmt.Println("can get local net info broadcast exit")
-			return
-		}
-		localNetBytes, err1 := json.Marshal(localNet)
-		if err1 != nil {
-			fmt.Println(err1)
-			return
+			fmt.Println("can get local net info broadcast,broadcast \"hello\"")
+			broadcastBytes = []byte("hello")
+		} else {
+			str, err1 := json.Marshal(localNet)
+			if err1 != nil {
+				fmt.Println(err1)
+				broadcastBytes = []byte("hello")
+			} else {
+				broadcastBytes = str
+			}
 		}
 		broadcast.Open(3000)
-		broadcast.BroadCast(string(localNetBytes))
+		broadcast.BroadCast(broadcastBytes)
 	}()
 
 	wg.Wait()
