@@ -59,12 +59,14 @@ func (s *Server) Run(port int16) error {
 	fmt.Println("server start success at port:", port)
 	s.run = true
 	s.localClients = make(map[net.Conn]*LocalClient)
-	//TODO 先获取控制板ip信息，设置clientMatrix的ip port 再打开客户端连接
+	//TODO 先获取控制板ip信息，后期需要通信的时候，再通过短连接通信
 	go func() {
-		fmt.Println("开始连接矩阵控制器")
+		fmt.Println("开始搜索矩阵控制器")
+		s.matrixClient.Ip = ""
 		s.matrixClient.GetMatrixIp()
 		if s.matrixClient.Ip != "" {
-			s.OpenMatrixClient()
+			//s.OpenMatrixClient()
+			fmt.Println("获取矩阵控制器ip成功")
 		} else {
 			fmt.Println("获取矩阵控制器ip失败")
 		}
