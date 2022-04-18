@@ -19,7 +19,7 @@ func main() {
 
 	//读取传入的参数
 	flag.IntVar(&port, "port", 8080, "http 端口号 默认 8080")
-	flag.IntVar(&broadcastPort, "broadcastPort", 3000, "http 端口号 默认 3000")
+	flag.IntVar(&broadcastPort, "broadcastPort", 3000, "udp广播端口号 默认 3000")
 
 	if len(os.Args) == 2 {
 		if os.Args[1] == "-v" {
