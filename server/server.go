@@ -205,7 +205,7 @@ func NXGetNtp(w http.ResponseWriter, r *http.Request) {
 	//2.从结果中获取配置
 	//从结果中获取含有get_ntp_info的那一行 按空格分开为 ntpIP ntpPort
 	rd := bufio.NewReader(bytes.NewReader(result))
-	var contents []string
+	contents := make([]string, 3)
 	isFind := false
 	for !isFind {
 		line, _, err1 := rd.ReadLine()
@@ -312,7 +312,7 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 	//2.从结果中获取配置
 	//从结果中获取含有get_double_net_info的那一行 按空格分开为 ip_type curip curmask curgateway eth1_ip_type eth1_curip eth1_curmask eth1_curgateway curmaindns curslavedns curcloudip curcloudport curdevicenum cur_city cur_mac protocol_version
 	rd := bufio.NewReader(bytes.NewReader(result))
-	var contents []string
+	contents := make([]string, 17)
 	isFind := false
 	for !isFind {
 		line, _, err1 := rd.ReadLine()
