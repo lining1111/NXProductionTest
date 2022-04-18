@@ -15,9 +15,11 @@ func main() {
 
 	var version = "1.0.0"
 	var port int
+	var broadcastPort int
 
 	//读取传入的参数
 	flag.IntVar(&port, "port", 8080, "http 端口号 默认 8080")
+	flag.IntVar(&broadcastPort, "broadcastPort", 3000, "http 端口号 默认 3000")
 
 	if len(os.Args) == 2 {
 		if os.Args[1] == "-v" {
@@ -55,7 +57,7 @@ func main() {
 				broadcastBytes = str
 			}
 		}
-		broadcast.Open(3000)
+		broadcast.Open(broadcastPort)
 		broadcast.BroadCast(broadcastBytes)
 	}()
 

@@ -57,7 +57,7 @@ func GetLocalNet() (Net, error) {
 	//2.从结果中获取配置
 	//从结果中获取含有get_double_net_info的那一行 按空格分开为 ip_type curip curmask curgateway eth1_ip_type eth1_curip eth1_curmask eth1_curgateway curmaindns curslavedns curcloudip curcloudport curdevicenum cur_city cur_mac protocol_version
 	rd := bufio.NewReader(bytes.NewReader(result))
-	contents := make([]string, 17)
+	contents := make([]string, 20)
 	isFind := false
 	for !isFind {
 		line, _, err1 := rd.ReadLine()
@@ -74,26 +74,26 @@ func GetLocalNet() (Net, error) {
 	}
 	if isFind {
 		if len(contents) >= 17 {
-			net.Eth0.Type = contents[1]
-			net.Eth0.Ip = contents[2]
-			net.Eth0.Mask = contents[3]
-			net.Eth0.GateWay = contents[4]
+			net.Eth0.Type = contents[2]
+			net.Eth0.Ip = contents[3]
+			net.Eth0.Mask = contents[4]
+			net.Eth0.GateWay = contents[5]
 
-			net.Eth1.Type = contents[5]
-			net.Eth1.Ip = contents[6]
-			net.Eth1.Mask = contents[7]
-			net.Eth1.GateWay = contents[8]
+			net.Eth1.Type = contents[6]
+			net.Eth1.Ip = contents[7]
+			net.Eth1.Mask = contents[8]
+			net.Eth1.GateWay = contents[9]
 
-			net.MainDNS = contents[9]
-			net.SlaveDNS = contents[10]
+			net.MainDNS = contents[10]
+			net.SlaveDNS = contents[11]
 
-			net.Eoc.Ip = contents[11]
-			net.Eoc.Port = contents[12]
+			net.Eoc.Ip = contents[12]
+			net.Eoc.Port = contents[13]
 
-			//deviceNum contents[13]
-			net.City = contents[14]
-			//curMac contents[15]
-			//protocol_version contents[16]
+			//deviceNum contents[14]
+			net.City = contents[15]
+			//curMac contents[16]
+			//protocol_version contents[17]
 		}
 	}
 
