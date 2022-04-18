@@ -5,19 +5,35 @@ import (
 	"NXProductionTest/common"
 	"NXProductionTest/server"
 	"encoding/json"
+	"flag"
 	"fmt"
+	"os"
 	"sync"
 )
 
 func main() {
+
+	var version = "1.0.0"
+	var port int
+
+	//读取传入的参数
+	flag.IntVar(&port, "port", 8080, "http 端口号 默认 8080")
+
+	if len(os.Args) == 2 {
+		if os.Args[1] == "-v" {
+			fmt.Println("version:", version)
+			os.Exit(1)
+		}
+
+	}
+	flag.Parse()
 
 	var wg sync.WaitGroup
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		var s = server.Server{}
-		s.Run(10000)
+		server.Run(port)
 	}()
 
 	wg.Add(1)
