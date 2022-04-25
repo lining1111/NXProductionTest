@@ -2,9 +2,7 @@ package main
 
 import (
 	"NXProductionTest/broadcast"
-	"NXProductionTest/common"
 	"NXProductionTest/server"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -39,27 +37,13 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		//获取ip
-		localNet, err := common.GetLocalNet()
-		var broadcastBytes []byte
+		err := broadcast.Open(broadcastPort)
 		if err != nil {
 			fmt.Println(err)
-			fmt.Println("can get local net info broadcast,broadcast \"hello\"")
-			broadcastBytes = []byte("hello")
-		} else {
-			str, err1 := json.Marshal(localNet)
-			if err1 != nil {
-				fmt.Println(err1)
-				broadcastBytes = []byte("hello")
-			} else {
-				broadcastBytes = str
-			}
 		}
-		err1 := broadcast.Open(broadcastPort)
-		if err != nil {
-			fmt.Println(err1)
-		}
-		broadcast.BroadCast(broadcastBytes)
+
+		broadcast.GetContent()
+		broadcast.BroadCast()
 	}()
 
 	wg.Wait()
