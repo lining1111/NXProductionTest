@@ -34,17 +34,17 @@ func CloseMatrixClient() {
 func Run(port int) {
 
 	//TODO 先获取控制板ip信息，后期需要通信的时候，再通过短连接通信
-	go func() {
-		fmt.Println("开始搜索矩阵控制器")
-		matrixClient.Ip = ""
-		matrixClient.GetMatrixIp()
-		if matrixClient.Ip != "" {
-			//s.OpenMatrixClient()
-			fmt.Println("获取矩阵控制器ip成功")
-		} else {
-			fmt.Println("获取矩阵控制器ip失败")
-		}
-	}()
+	//go func() {
+	//	fmt.Println("开始搜索矩阵控制器")
+	//	matrixClient.Ip = ""
+	//	matrixClient.GetMatrixIp()
+	//	if matrixClient.Ip != "" {
+	//		//s.OpenMatrixClient()
+	//		fmt.Println("获取矩阵控制器ip成功")
+	//	} else {
+	//		fmt.Println("获取矩阵控制器ip失败")
+	//	}
+	//}()
 
 	//NX_SetNet
 	http.HandleFunc("/NX_SetNet", NXSetNet)
@@ -223,7 +223,7 @@ func NXGetNtp(w http.ResponseWriter, r *http.Request) {
 	if isFind {
 		if len(contents) >= 4 {
 			ntp.Ip = contents[2]
-			ntp.Port = contents[3]
+			ntp.Port, _ = strconv.Atoi(contents[3])
 		}
 	}
 
@@ -271,7 +271,7 @@ func NXSetNtp(w http.ResponseWriter, r *http.Request) {
 	port := req.Port
 
 	//2.3设置NTP服务器
-	shell := "/home/nvidianx/bin/set_ntp_info " + ip + " " + port
+	shell := "/home/nvidianx/bin/set_ntp_info " + ip + " " + strconv.Itoa(port)
 	cmd := exec.Command("/bin/bash", "-c", shell)
 	err = cmd.Run()
 	if err != nil {
@@ -328,7 +328,7 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if isFind {
-		if len(contents) >= 17 {
+		if len(contents) >= 18 {
 			net.Eth0.Type = contents[2]
 			net.Eth0.Ip = contents[3]
 			net.Eth0.Mask = contents[4]
@@ -343,11 +343,12 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 			net.SlaveDNS = contents[11]
 
 			net.Eoc.Ip = contents[12]
-			net.Eoc.Port = contents[13]
+			net.Eoc.Port, _ = strconv.Atoi(contents[13])
 
 			//deviceNum contents[14]
 			net.City = contents[15]
 			//curMac contents[16]
+			net.Mac = contents[16]
 			//protocol_version contents[17]
 		}
 	}
@@ -413,7 +414,8 @@ func NXSetNet(w http.ResponseWriter, r *http.Request) {
 	shell := "/home/nvidianx/bin/set_nx_net_info " +
 		eth0_type + " " + eth0_ip + " " + eth0_mask + " " + " " + eth0_gateWay + " " +
 		eth1_type + " " + eth1_ip + " " + eth1_mask + " " + " " + eth1_gateWay + " " +
-		mainDNS + " " + slaveDNS + " " + eocCloudIp + " " + eocCloudPort + " " + city
+		mainDNS + " " + slaveDNS + " " + eocCloudIp + " " + strconv.Itoa(eocCloudPort) + " " + city
+	fmt.Println(shell)
 	cmd := exec.Command("/bin/bash", "-c", shell)
 	err = cmd.Run()
 	if err != nil {

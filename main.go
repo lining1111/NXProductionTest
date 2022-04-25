@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+
 	var showVersion bool
 	var version = "1.0.0"
 	var port int
@@ -54,7 +55,10 @@ func main() {
 				broadcastBytes = str
 			}
 		}
-		broadcast.Open(broadcastPort)
+		err1 := broadcast.Open(broadcastPort)
+		if err != nil {
+			fmt.Println(err1)
+		}
 		broadcast.BroadCast(broadcastBytes)
 	}()
 

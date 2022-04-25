@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -20,7 +21,7 @@ type Eth struct {
 
 type Eoc struct {
 	Ip   string `json:"ip"`
-	Port string `json:"port"`
+	Port int    `json:"port"`
 }
 
 // NX_SetNet NX_GetNet
@@ -31,12 +32,14 @@ type Net struct {
 	SlaveDNS string `json:"slaveDNS"`
 	Eoc      Eoc    `json:"eoc"`
 	City     string `json:"city"`
+
+	Mac string `json:"mac,omitempty"`
 }
 
 // NX_SetNtp NX_GetNtp
 type NTP struct {
 	Ip   string `json:"ip"`
-	Port string `json:"port"`
+	Port int    `json:"port"`
 }
 
 // GetLocalNet 返回net
@@ -73,7 +76,7 @@ func GetLocalNet() (Net, error) {
 		}
 	}
 	if isFind {
-		if len(contents) >= 17 {
+		if len(contents) >= 18 {
 			net.Eth0.Type = contents[2]
 			net.Eth0.Ip = contents[3]
 			net.Eth0.Mask = contents[4]
@@ -88,11 +91,12 @@ func GetLocalNet() (Net, error) {
 			net.SlaveDNS = contents[11]
 
 			net.Eoc.Ip = contents[12]
-			net.Eoc.Port = contents[13]
+			net.Eoc.Port, _ = strconv.Atoi(contents[13])
 
 			//deviceNum contents[14]
 			net.City = contents[15]
 			//curMac contents[16]
+			net.Mac = contents[16]
 			//protocol_version contents[17]
 		}
 	}
