@@ -176,6 +176,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Printf("Execute Shell:%s finished with output:\n%s", cmd.String(), string(output))
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("更新成功"))
 }
 
 func NXGetNtp(w http.ResponseWriter, r *http.Request) {
