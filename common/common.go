@@ -1,6 +1,7 @@
 package common
 
 import (
+	"NXProductionTest/db"
 	"bufio"
 	"bytes"
 	"fmt"
@@ -102,4 +103,33 @@ func GetLocalNet() (Net, error) {
 	}
 
 	return net, nil
+}
+
+type DeviceSN struct {
+	Sn string ` json:"sn"`
+}
+
+func GetDeviceSN(dbPath string) (DeviceSN, error) {
+	ret := DeviceSN{
+		Sn: "",
+	}
+	if !db.IsOpen {
+		db.Open(dbPath)
+	}
+	result, err := db.GetUNameFromTable_CL_ParkingArea()
+	if err != nil {
+		ret.Sn = ""
+	} else {
+		ret.Sn = result
+	}
+	return ret, err
+}
+
+func SetDeviceSN(dbPath string, deviceSN DeviceSN) error {
+	if !db.IsOpen {
+		db.Open(dbPath)
+	}
+	set := db.CL_ParkingArea{}
+	set.UName = deviceSN.Sn
+	return db.SetUNameInTable_CL_ParkingArea(&set)
 }

@@ -22,6 +22,7 @@ import (
 var matrixClient matrixControl.ClientMatrixControl
 
 var UpdateFilePath = "./update"
+var DbPath = "/home/nvidianx/bin/CLParking.db"
 
 func OpenMatrixClient() {
 	matrixClient.Open()
@@ -59,11 +60,83 @@ func Run(port int) {
 	//Update
 	http.HandleFunc("/NXUpdate", NXUpdate)
 
+	//GetDeviceSN
+	http.HandleFunc("/GetDeviceSN", NXGetDeviceSN)
+	//SetDeviceSN
+	http.HandleFunc("/SetDeviceSN", NXSetDeviceSN)
 	addr := ":" + strconv.Itoa(port)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		switch err.(type) {
+		case runtime.Error: //运行时错误
+			fmt.Println("run time err:", err)
+		}
+	}()
+	//1.解析http请求
+	rBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("req body read err:%v\n", err.Error())
+		return
+	}
+	fmt.Printf("body:%s\n", rBody)
+
+	//2.将请求主体转换为json结构体
+	var deviceSN common.DeviceSN
+	//2.1 读取
+	err = json.Unmarshal(rBody, &deviceSN)
+	if err != nil {
+		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：json解析失败"))
+		return
+	}
+
+	//3.写入数据库
+	err = common.SetDeviceSN(DbPath, deviceSN)
+	if err != nil {
+		fmt.Printf("写入数据库失败:%v\n", err.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：写入数据库失败"))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("成功：设置成功"))
+
+}
+
+func NXGetDeviceSN(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		switch err.(type) {
+		case runtime.Error: //运行时错误
+			fmt.Println("run time err:", err)
+		}
+	}()
+
+	//1.数据库获取信息
+	result, err := common.GetDeviceSN(DbPath)
+	if err != nil {
+		fmt.Printf("打开数据库失败:%v\n", err.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：打开数据库失败"))
+		return
+	}
+	//2.json信息组织回复
+	wBody, errBody := json.Marshal(result)
+	if errBody != nil {
+		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：json解析失败"))
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(wBody)
 }
 
 func NXUpdate(w http.ResponseWriter, r *http.Request) {

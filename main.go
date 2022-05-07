@@ -15,11 +15,13 @@ func main() {
 	var version = "1.0.0"
 	var port int
 	var broadcastPort int
+	var dbPath string
 
 	//读取传入的参数
 	flag.BoolVar(&showVersion, "v", false, "显示版本号")
 	flag.IntVar(&port, "port", 8080, "http 端口号 默认 8080")
 	flag.IntVar(&broadcastPort, "broadcastPort", 3000, "udp广播端口号 默认 3000")
+	flag.StringVar(&dbPath, "dbPath", "/home/nvidianx/bin/CLParking.db", "数据库位置，默认 /home/nvidianx/bin/CLParking.db")
 	flag.Parse()
 	if showVersion {
 		fmt.Println("version:", version)
@@ -31,6 +33,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
+		server.DbPath = dbPath
 		server.Run(port)
 	}()
 
