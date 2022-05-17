@@ -2,6 +2,7 @@ package main
 
 import (
 	"NXProductionTest/broadcast"
+	"NXProductionTest/myLog"
 	"NXProductionTest/server"
 	"flag"
 	"fmt"
@@ -10,6 +11,8 @@ import (
 )
 
 func main() {
+
+	//camera.GetDeviceInfo1()
 
 	var showVersion bool
 	var version = "1.0.0"
@@ -28,6 +31,7 @@ func main() {
 		os.Exit(0)
 	}
 
+	myLog.Logger.Println("开始")
 	var wg sync.WaitGroup
 
 	wg.Add(1)

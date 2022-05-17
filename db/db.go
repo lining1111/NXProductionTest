@@ -15,6 +15,10 @@ type CL_ParkingArea struct {
 	DBDataVersion string `db:"DBDataVersion"`
 }
 
+type CL_Config struct {
+	Sn string `db:"Sn"`
+}
+
 var ConfigDb *sqlx.DB
 var IsOpen = false
 
@@ -78,5 +82,31 @@ func SetUNameInTable_CL_ParkingArea(area *CL_ParkingArea) error {
 		area.UName,
 		area.UPswd,
 		area.DBDataVersion)
+	return err
+}
+
+func GetSnFromTable_CL_Config() (string, error) {
+	var result = ""
+	sqlCmd := "select Sn from  CL_Config"
+	row := ConfigDb.QueryRowx(sqlCmd)
+	if row.Err() != nil {
+		return result, row.Err()
+	}
+
+	err := row.Scan(&result)
+	if err != nil {
+		fmt.Printf(err.Error())
+		return result, err
+	}
+	return result, nil
+}
+
+func SetSnInTable_CL_Config(config *CL_Config) error {
+	ConfigDb.Exec("delete from CL_Config")
+
+	_, err := ConfigDb.Exec("replace into CL_Config("+
+		"Sn)"+
+		"values(?)",
+		config.Sn)
 	return err
 }

@@ -64,6 +64,9 @@ func Run(port int) {
 	http.HandleFunc("/GetDeviceSN", NXGetDeviceSN)
 	//SetDeviceSN
 	http.HandleFunc("/SetDeviceSN", NXSetDeviceSN)
+	//静态文件服务器
+	http.Handle("/", http.FileServer(http.Dir("./NPT")))
+
 	addr := ":" + strconv.Itoa(port)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {

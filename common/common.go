@@ -106,21 +106,26 @@ func GetLocalNet() (Net, error) {
 }
 
 type DeviceSN struct {
-	Sn string ` json:"sn"`
+	Sn       string `json:"sn"`       //串号32位
+	SerialNO string `json:"serialNO"` //序列号10位
 }
 
 func GetDeviceSN(dbPath string) (DeviceSN, error) {
 	ret := DeviceSN{
-		Sn: "",
+		Sn:       "",
+		SerialNO: "",
 	}
 	if !db.IsOpen {
 		db.Open(dbPath)
 	}
 	result, err := db.GetUNameFromTable_CL_ParkingArea()
-	if err != nil {
+	result1, err1 := db.GetSnFromTable_CL_Config()
+	if err != nil || err1 != nil {
 		ret.Sn = ""
+		ret.SerialNO = ""
 	} else {
 		ret.Sn = result
+		ret.SerialNO = result1
 	}
 	return ret, err
 }
@@ -131,5 +136,11 @@ func SetDeviceSN(dbPath string, deviceSN DeviceSN) error {
 	}
 	set := db.CL_ParkingArea{}
 	set.UName = deviceSN.Sn
-	return db.SetUNameInTable_CL_ParkingArea(&set)
+	set1 := db.CL_Config{}
+	set1.Sn = deviceSN.SerialNO
+	err := db.SetUNameInTable_CL_ParkingArea(&set)
+	if err != nil {
+		return err
+	}
+	return db.SetSnInTable_CL_Config(&set1)
 }
