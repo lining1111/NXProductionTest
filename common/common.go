@@ -144,3 +144,12 @@ func SetDeviceSN(dbPath string, deviceSN DeviceSN) error {
 	}
 	return db.SetSnInTable_CL_Config(&set1)
 }
+
+type GetDeviceInfo struct {
+	Type string `json:"type"` //"TuoLuoYi","Voltage","TemWet","Fan","HeatState","SportAlarm","AngleAlarm1","AngleAlarm2","AngleAlarm3", "CameraFixedVersion","RadarConnection" , "RadarGetData", "PicColor", "CameraColorMix", "CamaraBoltLocked", "BracketBoltLocked", "CameraTakingPhotosClear"
+}
+
+type DeviceInfo struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}

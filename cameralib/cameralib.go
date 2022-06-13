@@ -66,7 +66,8 @@ extern swig_intgo _wrap_Open_cameralib_23f4c61520276210(void);
 extern swig_intgo _wrap_GetDeviceInfo_cameralib_23f4c61520276210(void);
 extern swig_type_13 _wrap_FormatDeviceInfo_cameralib_23f4c61520276210(uintptr_t arg1);
 #undef intgo
-#cgo LDFLAGS: -L/usr/local/lib -ljsoncpp -lprotobuf -luv -lNetSdk
+//#cgo LDFLAGS: -L/usr/local/lib -ljsoncpp -lprotobuf -luv -lNetSdk
+#cgo LDFLAGS: -L/home/lining/GolandProjects/NXProductionTest/cameralib -ljsoncpp -lprotobuf -luv -lNetSdk
 */
 import "C"
 

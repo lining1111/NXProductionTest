@@ -8,11 +8,16 @@ import (
 	"strconv"
 )
 
+var MClientMatrixControl ClientMatrixControl
+
 type ClientMatrixControl struct {
 	Ip   string //服务端ip
 	Port int    //服务器端口
 	conn net.Conn
 	Run  bool
+	//心跳帧内容
+	HeartInfo    Heart
+	ReceiveHeart bool
 }
 
 func (c *ClientMatrixControl) GetMatrixIp() {
@@ -58,4 +63,20 @@ func (c *ClientMatrixControl) Open() error {
 func (c *ClientMatrixControl) Close() {
 	c.conn.Close()
 	c.Run = false
+}
+
+func (c *ClientMatrixControl) ThreadGetReceive() {
+	go func() {
+		fmt.Println("matrixControl receive thread")
+		for c.Run {
+			content := make([]byte, 4096)
+			n, err := c.conn.Read(content)
+			if err != nil {
+				fmt.Println("matrix sock receive err:", err)
+			}
+			if content[0] == 0x88 && content[1] == 0xa0 {
+				c.HeartInfo.Unpack(content[0:n])
+			}
+		}
+	}()
 }

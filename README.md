@@ -12,4 +12,5 @@
 
 ## 编译arm64
 
+    CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=/usr/local/arm64/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc AR=aarch64-linux-gnu-ar CXX=/usr/local/arm64/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-g++ CGO_CXXFLAGS="-g -O2 -std=c++11"  go build
     CGO_ENABLED=1 GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc AR=aarch64-linux-gnu-ar CXX=aarch64-linux-gnu-g++ CGO_CXXFLAGS="-g -O2 -std=c++11"  go build

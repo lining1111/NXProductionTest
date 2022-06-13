@@ -2,6 +2,7 @@ package main
 
 import (
 	"NXProductionTest/broadcast"
+	"NXProductionTest/matrixControl"
 	"NXProductionTest/myLog"
 	"NXProductionTest/server"
 	"flag"
@@ -15,7 +16,7 @@ func main() {
 	//camera.GetDeviceInfo1()
 
 	var showVersion bool
-	var version = "1.0.0"
+	var version = "1.0.1"
 	var port int
 	var broadcastPort int
 	var dbPath string
@@ -37,6 +38,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
+		fmt.Println("web thread")
 		server.DbPath = dbPath
 		server.Run(port)
 	}()
@@ -44,6 +46,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
+		fmt.Println("udpBroadcast thread")
 		err := broadcast.Open(broadcastPort)
 		if err != nil {
 			fmt.Println(err)
@@ -51,6 +54,26 @@ func main() {
 
 		broadcast.GetContent()
 		broadcast.BroadCast()
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Println("matrixControl thread")
+		matrixControl.MClientMatrixControl.Ip = ""
+		matrixControl.MClientMatrixControl.Run = false
+		matrixControl.MClientMatrixControl.ReceiveHeart = false
+
+		//根据udp广播信息获取ip信息
+		for matrixControl.MClientMatrixControl.Ip == "" {
+			matrixControl.MClientMatrixControl.GetMatrixIp()
+		}
+		err := matrixControl.MClientMatrixControl.Open()
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			matrixControl.MClientMatrixControl.ThreadGetReceive()
+		}
 	}()
 
 	wg.Wait()

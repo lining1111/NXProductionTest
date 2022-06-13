@@ -8,9 +8,11 @@ import (
 	"os/exec"
 )
 
+var Opened = false
+
 type DeviceInfo struct {
-	SoftVersion string `json:"softVersion,omitempty"`
-	HardVersion string `json:"hardVersion,omitempty"`
+	SoftVersion string `json:"softWareVersion,omitempty"`
+	HardVersion string `json:"hardWareVersion,omitempty"`
 	AiVersion   string `json:"aiVersion,omitempty"`
 }
 
@@ -44,9 +46,15 @@ func GetDeviceInfo() (DevicesInfo, error) {
 func GetDeviceInfo1() (DevicesInfo, error) {
 	devicesInfo := DevicesInfo{}
 
-	cameralib.Open()
+	if !Opened {
+		ret := cameralib.Open()
+		if ret == 0 {
+			Opened = true
+		}
+	}
 	cameralib.GetDeviceInfo()
 	result := cameralib.FormatDeviceInfo(cameralib.GetVector_DeviceConfig())
+	fmt.Println(result)
 	//content是一个json串
 	err2 := json.Unmarshal([]byte(result), &devicesInfo)
 	if err2 != nil {

@@ -1,8 +1,10 @@
 package server
 
 import (
+	"NXProductionTest/camera"
 	"NXProductionTest/common"
 	"NXProductionTest/matrixControl"
+	"NXProductionTest/radar"
 	"archive/zip"
 	"bufio"
 	"bytes"
@@ -64,6 +66,9 @@ func Run(port int) {
 	http.HandleFunc("/GetDeviceSN", NXGetDeviceSN)
 	//SetDeviceSN
 	http.HandleFunc("/SetDeviceSN", NXSetDeviceSN)
+	//GetDeviceInfo
+	http.HandleFunc("/GetDeviceInfo", GetDeviceInfo)
+
 	//静态文件服务器
 	http.Handle("/", http.FileServer(http.Dir("./NPT")))
 
@@ -72,6 +77,262 @@ func Run(port int) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		switch err.(type) {
+		case runtime.Error: //运行时错误
+			fmt.Println("run time err:", err)
+		}
+	}()
+
+	//1.解析http请求
+	rBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("req body read err:%v\n", err.Error())
+		return
+	}
+	fmt.Printf("body:%s\n", rBody)
+
+	//2.将请求主体转换为json结构体
+	var getDeviceInfo common.GetDeviceInfo
+	//2.1 读取
+	err = json.Unmarshal(rBody, &getDeviceInfo)
+	if err != nil {
+		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：json解析失败"))
+		return
+	}
+	//3根据type值来进行不同的设备信息获取
+	var value string
+	switch getDeviceInfo.Type {
+	case "TuoLuoYi": //陀螺仪芯片
+		value = getGyroscopeState()
+	case "Voltage": //电压
+		value = getVoltage()
+	case "TemWet": //温度，湿度
+		value = getTemWet()
+	case "Fan": //风扇
+		value = getFun()
+	case "HeatState": //加热状态
+		value = getHeatState()
+	case "SportAlarm": //运动告警
+		value = getSportAlarm()
+	case "AngleAlarm1": //角度告警1
+		value = getAngleAlarm1()
+	case "AngleAlarm2": //角度告警2
+		value = getAngleAlarm2()
+	case "AngleAlarm3": //角度告警3
+		value = getAngleAlarm3()
+	case "CameraFixedVersion": // 镜头模组固件版本
+		value = getCameraFixedVersion()
+	case "RadarConnection": //雷达通讯是否正常
+		value = getRadarConnection()
+	}
+	var ret common.DeviceInfo
+	ret.Type = getDeviceInfo.Type
+	ret.Value = value
+
+	//2.json信息组织回复
+	wBody, errBody := json.Marshal(ret)
+	if errBody != nil {
+		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		w.WriteHeader(http.StatusGone)
+		w.Write([]byte("失败：json解析失败"))
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(wBody)
+}
+func getGyroscopeState() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		detect := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0004) >> 2
+		initiated := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0008) >> 3
+		if detect == 1 {
+			if initiated == 1 {
+				retStr = "initiated"
+			} else {
+				retStr = "notInitiated"
+			}
+		} else {
+			retStr = "notDetect"
+		}
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	//return "InitOK"
+}
+func getVoltage() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		voltage := matrixControl.MClientMatrixControl.HeartInfo.SwitchVoltage
+		retStr = strconv.Itoa(int(voltage))
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	//return "12V"
+}
+func getTemWet() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		temperature := matrixControl.MClientMatrixControl.HeartInfo.Temperature
+		humidity := matrixControl.MClientMatrixControl.HeartInfo.Humidity
+		retStr = strconv.Itoa(int(temperature))
+		retStr += ","
+		retStr += strconv.Itoa(int(humidity))
+	} else {
+		retStr = "notConnect"
+	}
+	return retStr
+
+	//return "15,95"
+}
+func getFun() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		fun1State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0200) >> 9
+		fun2State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0400) >> 10
+
+		if fun1State == 1 {
+			retStr = "ok"
+		} else {
+			retStr = "alarm"
+		}
+		retStr += ","
+
+		if fun2State == 1 {
+			retStr += "ok"
+		} else {
+			retStr += "alarm"
+		}
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	//return "on"
+}
+func getHeatState() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		heatState := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0010) >> 4
+
+		if heatState == 1 {
+			retStr = "heat"
+		} else {
+			retStr = "notHeat"
+		}
+
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	//return "on"
+}
+
+func getSportAlarm() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		sportAlarm := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0002) >> 1
+
+		if sportAlarm == 1 {
+			retStr = "alarm"
+		} else {
+			retStr = "notAlarm"
+		}
+
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	//return "on"
+}
+func getAngleAlarm1() string {
+	retStr := ""
+	if matrixControl.MClientMatrixControl.ReceiveHeart {
+		angleAlarm1 := matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0001
+
+		if angleAlarm1 == 1 {
+			retStr = "alarm"
+		} else {
+			retStr = "notAlarm"
+		}
+
+	} else {
+		retStr = "notConnect"
+	}
+
+	return retStr
+
+	return "on"
+}
+func getAngleAlarm2() string {
+	return "on"
+}
+func getAngleAlarm3() string {
+	return "on"
+}
+
+func getCameraFixedVersion() string {
+	retStr := ""
+	infos, err := camera.GetDeviceInfo1()
+	if err != nil {
+		retStr = "notConnect"
+	} else {
+		bytes, err1 := json.Marshal(&infos)
+		if err1 != nil {
+			retStr = "jsonErr"
+		} else {
+			retStr = string(bytes)
+		}
+	}
+	return retStr
+
+	//return "0123456789"
+}
+
+func getRadarConnection() string {
+	retStr := ""
+	content, err := radar.GetContentFromUDP(20050)
+	if err != nil {
+		retStr = "notConnect"
+	} else {
+		info := radar.GetInfoFromContent(content)
+		if info.Ip != "" {
+			err1 := radar.Open(info)
+			if err1 != nil {
+				retStr = "notConnect"
+			} else {
+				radar.SetMode3()
+				err2 := radar.Connect()
+				if err2 != nil {
+					retStr = "connectFail"
+				} else {
+					retStr = "connect"
+				}
+			}
+
+		} else {
+			retStr = "notConnect"
+		}
+	}
+	return retStr
+
+	//return "ok"
 }
 
 func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
@@ -240,8 +501,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("unzip all")
 
-	//5.执行文件 update.sh
-	shell := UpdateFilePath + "/" + "update.sh"
+	//5.执行文件 install.sh
+	shell := UpdateFilePath + "/" + "install.sh"
 	//增加可执行属性
 	cmd := exec.Command("chmod", "+x", shell)
 	cmd.Run()
