@@ -7,15 +7,17 @@
 #include <vector>
 #include "cameralib.h"
 
-//#ifdef x64
+//#define x64
 
-//#include <jsoncpp/json/json.h>
+#ifdef x64
 
-//#else
+#include <jsoncpp/json/json.h>
+
+#else
 
 #include <json/json.h>
 
-//#endif
+#endif
 
 puint g_pUpgradeHandle = nullptr;
 //HANDLE hEvent = NULL;

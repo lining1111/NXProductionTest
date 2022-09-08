@@ -1,7 +1,6 @@
 package matrixControl
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/thinkeridea/go-extend/exnet"
 	"net"
@@ -21,28 +20,35 @@ type ClientMatrixControl struct {
 }
 
 func (c *ClientMatrixControl) GetMatrixIp() {
-	connMatrix, err := net.ListenUDP("udp", &net.UDPAddr{
-		IP:   net.IPv4(0, 0, 0, 0),
-		Port: 876, //矩阵控制器的udp端口
-	})
+
+	//打开udp连接
+	net.InterfaceAddrs()
+	laddr := net.UDPAddr{
+		IP:   net.IPv4(0, 0, 0, 0), //写局域网下分配IP，0.0.0.0可以用来测试
+		Port: 876,                  //矩阵控制器的udp端口
+	}
+	connMatrix, err := net.ListenUDP("udp", &laddr)
 	if err != nil {
 		c.Ip = ""
+		return
+	}
+	defer connMatrix.Close()
+
+	fmt.Println("matrix control udp connect")
+	buf := make([]byte, 4096)
+	n, err2 := connMatrix.Read(buf)
+	if err2 != nil {
+		c.Ip = ""
 	} else {
-		reader := bufio.NewReader(connMatrix)
-		buf := make([]byte, 1024)
-		n, err1 := reader.Read(buf)
-		if err1 != nil {
+		fmt.Println("matrix control receive:", buf[:n])
+		//将接收的信息反译
+		rspGetNet := Rsp_GetNetSn{}
+		rspGetNet.Unpack(buf[0:n])
+		c.Ip, err = exnet.Long2IPString(uint(rspGetNet.Ip))
+		if err != nil {
 			c.Ip = ""
-		} else {
-			fmt.Println(string(buf))
-			//将接收的信息反译
-			rspGetNet := Rsp_GetNetSn{}
-			rspGetNet.Unpack(buf[0:n])
-			c.Ip, err = exnet.Long2IPString(uint(rspGetNet.Ip))
-			if err != nil {
-				c.Ip = ""
-			}
 		}
+		c.Port = 5000
 	}
 }
 
@@ -56,7 +62,7 @@ func (c *ClientMatrixControl) Open() error {
 	if err == nil {
 		c.Run = true
 	}
-
+	fmt.Println("matrix control tcp open")
 	return err
 }
 
@@ -74,8 +80,11 @@ func (c *ClientMatrixControl) ThreadGetReceive() {
 			if err != nil {
 				fmt.Println("matrix sock receive err:", err)
 			}
+			fmt.Println("matrix control receive:", content[:n])
 			if content[0] == 0x88 && content[1] == 0xa0 {
-				c.HeartInfo.Unpack(content[0:n])
+				c.HeartInfo.Unpack(content[3 : n-1]) //剔除头和尾
+				fmt.Println(c.HeartInfo)
+				c.ReceiveHeart = true
 			}
 		}
 	}()

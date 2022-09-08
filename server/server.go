@@ -4,6 +4,7 @@ import (
 	"NXProductionTest/camera"
 	"NXProductionTest/common"
 	"NXProductionTest/matrixControl"
+	"NXProductionTest/myLog"
 	"NXProductionTest/radar"
 	"archive/zip"
 	"bufio"
@@ -71,12 +72,54 @@ func Run(port int) {
 
 	//静态文件服务器
 	http.Handle("/", http.FileServer(http.Dir("./NPT")))
+	//获取日志文件
+	http.HandleFunc("/GetLog", GetLog)
 
 	addr := ":" + strconv.Itoa(port)
 	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func GetLog(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		switch err.(type) {
+		case runtime.Error: //运行时错误
+			fmt.Println("run time err:", err)
+		}
+	}()
+	//1.解析http请求
+	rBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Printf("req body read err:%v\n", err.Error())
+		return
+	}
+	fmt.Printf("body:%s\n", rBody)
+	//2.获取 json中 file 属性，也就是文件的名称
+	//type GetFile struct {
+	//	File string `json:"file"`
+	//}
+	//fileInfo := GetFile{}
+	//
+	//err_json := json.Unmarshal(rBody, &fileInfo)
+	//if err_json != nil {
+	//	fmt.Println("json 解析错误:", err_json)
+	//	return
+	//}
+	//3.下载文件
+	file, _ := os.Open(myLog.LogPath)
+	defer file.Close()
+
+	fileStat, _ := file.Stat()
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Disposition", "attachment; filename="+file.Name())
+	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Length", strconv.FormatInt(fileStat.Size(), 10))
+
+	io.Copy(w, file)
 }
 
 func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
@@ -87,6 +130,9 @@ func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("run time err:", err)
 		}
 	}()
+
+	//写入日志文件
+	myLog.Logger.Println("接收获取设备信息命令")
 
 	//1.解析http请求
 	rBody, err := ioutil.ReadAll(r.Body)
@@ -102,8 +148,11 @@ func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(rBody, &getDeviceInfo)
 	if err != nil {
 		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Println("json unmarshal err:", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
+
 		return
 	}
 	//3根据type值来进行不同的设备信息获取
@@ -116,7 +165,7 @@ func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	case "TemWet": //温度，湿度
 		value = getTemWet()
 	case "Fan": //风扇
-		value = getFun()
+		value = getFan()
 	case "HeatState": //加热状态
 		value = getHeatState()
 	case "SportAlarm": //运动告警
@@ -131,6 +180,8 @@ func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
 		value = getCameraFixedVersion()
 	case "RadarConnection": //雷达通讯是否正常
 		value = getRadarConnection()
+	default:
+		value = "unknown type"
 	}
 	var ret common.DeviceInfo
 	ret.Type = getDeviceInfo.Type
@@ -140,11 +191,17 @@ func GetDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	wBody, errBody := json.Marshal(ret)
 	if errBody != nil {
 		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		//写入日志文件
+		myLog.Logger.Println("json unmarshal err:", errBody.Error())
+
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(wBody)
+
+	//写入日志文件
+	myLog.Logger.Printf("返回结果:%s\n", string(wBody))
 }
 func getGyroscopeState() string {
 	retStr := ""
@@ -196,20 +253,20 @@ func getTemWet() string {
 
 	//return "15,95"
 }
-func getFun() string {
+func getFan() string {
 	retStr := ""
 	if matrixControl.MClientMatrixControl.ReceiveHeart {
-		fun1State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0200) >> 9
-		fun2State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0400) >> 10
+		fan1State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0200) >> 9
+		fan2State := (matrixControl.MClientMatrixControl.HeartInfo.AlarmStatus & 0x0400) >> 10
 
-		if fun1State == 1 {
+		if fan1State == 1 {
 			retStr = "ok"
 		} else {
 			retStr = "alarm"
 		}
 		retStr += ","
 
-		if fun2State == 1 {
+		if fan2State == 1 {
 			retStr += "ok"
 		} else {
 			retStr += "alarm"
@@ -278,7 +335,6 @@ func getAngleAlarm1() string {
 
 	return retStr
 
-	return "on"
 }
 func getAngleAlarm2() string {
 	return "on"
@@ -307,29 +363,25 @@ func getCameraFixedVersion() string {
 
 func getRadarConnection() string {
 	retStr := ""
-	content, err := radar.GetContentFromUDP(20050)
-	if err != nil {
-		retStr = "notConnect"
-	} else {
-		info := radar.GetInfoFromContent(content)
-		if info.Ip != "" {
-			err1 := radar.Open(info)
-			if err1 != nil {
-				retStr = "notConnect"
-			} else {
-				radar.SetMode3()
-				err2 := radar.Connect()
-				if err2 != nil {
-					retStr = "connectFail"
-				} else {
-					retStr = "connect"
-				}
-			}
 
-		} else {
+	if radar.LocalInfo.Ip != "" {
+		err1 := radar.Open(radar.LocalInfo)
+		if err1 != nil {
 			retStr = "notConnect"
+		} else {
+			radar.SetMode3()
+			err2 := radar.Connect()
+			if err2 != nil {
+				retStr = "connectFail"
+			} else {
+				retStr = "connect"
+			}
 		}
+
+	} else {
+		retStr = "notConnect"
 	}
+
 	return retStr
 
 	//return "ok"
@@ -343,6 +395,9 @@ func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("run time err:", err)
 		}
 	}()
+
+	//写入日志文件
+	myLog.Logger.Println("接收设置设备SN命令")
 	//1.解析http请求
 	rBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -350,6 +405,8 @@ func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Printf("body:%s\n", rBody)
+	//写入日志文件
+	myLog.Logger.Println("body:", rBody)
 
 	//2.将请求主体转换为json结构体
 	var deviceSN common.DeviceSN
@@ -357,6 +414,8 @@ func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(rBody, &deviceSN)
 	if err != nil {
 		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Println("json unmarshal err:", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 		return
@@ -366,13 +425,16 @@ func NXSetDeviceSN(w http.ResponseWriter, r *http.Request) {
 	err = common.SetDeviceSN(DbPath, deviceSN)
 	if err != nil {
 		fmt.Printf("写入数据库失败:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Println("写入数据库失败:", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：写入数据库失败"))
 		return
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("成功：设置成功"))
-
+	//写入日志文件
+	myLog.Logger.Println("设置SN成功")
 }
 
 func NXGetDeviceSN(w http.ResponseWriter, r *http.Request) {
@@ -384,10 +446,14 @@ func NXGetDeviceSN(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	//写入日志文件
+	myLog.Logger.Println("接收获取设备SN命令")
 	//1.数据库获取信息
 	result, err := common.GetDeviceSN(DbPath)
 	if err != nil {
 		fmt.Printf("打开数据库失败:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Println("打开数据库失败:", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：打开数据库失败"))
 		return
@@ -396,11 +462,16 @@ func NXGetDeviceSN(w http.ResponseWriter, r *http.Request) {
 	wBody, errBody := json.Marshal(result)
 	if errBody != nil {
 		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		//写入日志文件
+		myLog.Logger.Println("json unmarshal err:", errBody.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(wBody)
+
+	//写入日志文件
+	myLog.Logger.Printf("返回结果%s\n", string(wBody))
 }
 
 func NXUpdate(w http.ResponseWriter, r *http.Request) {
@@ -411,12 +482,17 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("run time err:", err)
 		}
 	}()
+
+	//写入日志文件
+	myLog.Logger.Println("接收更新命令")
 	//1.获取上传的文件 uploadFile
 	r.ParseForm()
 	file, handle, err := r.FormFile("updateFile")
 	if err != nil {
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte(err.Error()))
+		//写入日志文件
+		myLog.Logger.Println("返回错误结果:", err.Error())
 		return
 	}
 
@@ -426,6 +502,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 	if errRead != nil {
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte(errRead.Error()))
+		//写入日志文件
+		myLog.Logger.Println("返回错误结果:", errRead.Error())
 		file.Close()
 		return
 	}
@@ -435,6 +513,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 	if contentType != "application/zip" {
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("只支持 zip 压缩格式"))
+		//写入日志文件
+		myLog.Logger.Println("只支持 zip 压缩格式")
 		file.Close()
 		return
 	}
@@ -452,6 +532,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("打开文件失败")
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("打开文件失败"))
+		//写入日志文件
+		myLog.Logger.Println("打开文件失败")
 		file.Close()
 		return
 	}
@@ -463,6 +545,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 	file.Close()
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("上传成功"))
+	//写入日志文件
+	myLog.Logger.Println("上传成功")
 	//4.解压文件
 	//解压出zip
 	read, err1 := zip.OpenReader(saveFile.Name())
@@ -470,6 +554,8 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err1)
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：打开zip文件失败"))
+		//写入日志文件
+		myLog.Logger.Println("打开zip文件失败")
 		return
 	}
 
@@ -510,11 +596,15 @@ func NXUpdate(w http.ResponseWriter, r *http.Request) {
 	output, errCmd := cmd.Output()
 	if errCmd != nil {
 		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), errCmd.Error())
+		//写入日志文件
+		myLog.Logger.Printf("cmd %s exec fail:%v\n", cmd.String(), errCmd.Error())
 		return
 	}
 	fmt.Printf("Execute Shell:%s finished with output:\n%s", cmd.String(), string(output))
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("更新成功"))
+	//写入日志文件
+	myLog.Logger.Println("更新成功")
 }
 
 func NXGetNtp(w http.ResponseWriter, r *http.Request) {
@@ -526,6 +616,9 @@ func NXGetNtp(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	//写入日志文件
+	myLog.Logger.Println("接收获取设备NTP信息命令")
+
 	var ntp common.NTP
 
 	//1.执行shell指令
@@ -534,6 +627,8 @@ func NXGetNtp(w http.ResponseWriter, r *http.Request) {
 	result, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：执行命令失败"))
 		return
@@ -570,11 +665,16 @@ func NXGetNtp(w http.ResponseWriter, r *http.Request) {
 	wBody, errBody := json.Marshal(ntp)
 	if errBody != nil {
 		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		//写入日志文件
+		myLog.Logger.Printf("json unmarshal err:%v\n", errBody.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(wBody)
+
+	//写入日志文件
+	myLog.Logger.Printf("返回结果:%s\n", string(wBody))
 }
 
 func NXSetNtp(w http.ResponseWriter, r *http.Request) {
@@ -586,13 +686,20 @@ func NXSetNtp(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	//写入日志文件
+	myLog.Logger.Println("接收设置设备NTP命令")
+
 	//1.解析http请求
 	rBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Printf("req body read err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("req body read err:%v\n", err.Error())
 		return
 	}
 	fmt.Printf("body:%s\n", rBody)
+	//写入日志文件
+	myLog.Logger.Printf("body:%s\n", rBody)
 
 	//2.将请求主体转换为json结构体
 	var req common.NTP
@@ -600,6 +707,8 @@ func NXSetNtp(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(rBody, &req)
 	if err != nil {
 		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("json unmarshal err:%v\n", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 		return
@@ -615,6 +724,8 @@ func NXSetNtp(w http.ResponseWriter, r *http.Request) {
 	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：设置NTP失败"))
 		return
@@ -622,6 +733,8 @@ func NXSetNtp(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("成功：设置NTP成功"))
+	//写入日志文件
+	myLog.Logger.Println("设置NTP成功")
 }
 
 func NXGetNet(w http.ResponseWriter, r *http.Request) {
@@ -633,6 +746,8 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	//写入日志文件
+	myLog.Logger.Println("接收获取设备网络信息命令")
 	var net common.Net
 
 	//1.执行shell指令
@@ -641,6 +756,8 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 	result, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：执行命令失败"))
 		return
@@ -695,11 +812,15 @@ func NXGetNet(w http.ResponseWriter, r *http.Request) {
 	wBody, errBody := json.Marshal(net)
 	if errBody != nil {
 		fmt.Printf("json unmarshal err:%v\n", errBody.Error())
+		//写入日志文件
+		myLog.Logger.Printf("json unmarshal err:%v\n", errBody.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(wBody)
+	//写入日志文件
+	myLog.Logger.Printf("返回结果:%s\n", string(wBody))
 }
 
 func NXSetNet(w http.ResponseWriter, r *http.Request) {
@@ -711,10 +832,14 @@ func NXSetNet(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	//写入日志文件
+	myLog.Logger.Println("接收设置设备网络信息命令")
 	//1.解析http请求
 	rBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Printf("req body read err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("req body read err:%v\n", err.Error())
 		return
 	}
 	fmt.Printf("body:%s\n", rBody)
@@ -725,6 +850,8 @@ func NXSetNet(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(rBody, &req)
 	if err != nil {
 		fmt.Printf("json unmarshal err:%v\n", err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("json unmarshal err:%v\n", err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：json解析失败"))
 		return
@@ -759,6 +886,8 @@ func NXSetNet(w http.ResponseWriter, r *http.Request) {
 	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
+		//写入日志文件
+		myLog.Logger.Printf("cmd %s exec fail:%v\n", cmd.String(), err.Error())
 		w.WriteHeader(http.StatusGone)
 		w.Write([]byte("失败：设置网络信息失败"))
 		return
@@ -766,4 +895,6 @@ func NXSetNet(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("成功：设置网络信息成功"))
+	//写入日志文件
+	myLog.Logger.Println("设置网络信息成功")
 }

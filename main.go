@@ -4,6 +4,7 @@ import (
 	"NXProductionTest/broadcast"
 	"NXProductionTest/matrixControl"
 	"NXProductionTest/myLog"
+	"NXProductionTest/radar"
 	"NXProductionTest/server"
 	"flag"
 	"fmt"
@@ -33,6 +34,7 @@ func main() {
 	}
 
 	myLog.Logger.Println("开始")
+
 	var wg sync.WaitGroup
 
 	wg.Add(1)
@@ -60,20 +62,28 @@ func main() {
 	go func() {
 		defer wg.Done()
 		fmt.Println("matrixControl thread")
-		matrixControl.MClientMatrixControl.Ip = ""
+		matrixControl.MClientMatrixControl.Ip = "192.168.8.2"
+		matrixControl.MClientMatrixControl.Port = 5000
 		matrixControl.MClientMatrixControl.Run = false
 		matrixControl.MClientMatrixControl.ReceiveHeart = false
 
 		//根据udp广播信息获取ip信息
-		for matrixControl.MClientMatrixControl.Ip == "" {
-			matrixControl.MClientMatrixControl.GetMatrixIp()
-		}
+		//for matrixControl.MClientMatrixControl.Ip == "" {
+		//	matrixControl.MClientMatrixControl.GetMatrixIp()
+		//}
+		fmt.Println("matrix control ip:", matrixControl.MClientMatrixControl.Ip)
 		err := matrixControl.MClientMatrixControl.Open()
 		if err != nil {
 			fmt.Println(err)
 		} else {
 			matrixControl.MClientMatrixControl.ThreadGetReceive()
 		}
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fmt.Println("radar thread")
+		radar.ThreadGetNetInfoFromUDP()
 	}()
 
 	wg.Wait()

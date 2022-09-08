@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net"
 	"strings"
+	"time"
 )
 
 const MaxBufSize = 4096
@@ -16,6 +17,10 @@ type Info struct {
 }
 
 var Client *net.TCPConn
+var LocalInfo = Info{
+	"",
+	"",
+}
 
 // udp port 20050
 func GetContentFromUDP(port int) (string, error) {
@@ -32,7 +37,7 @@ func GetContentFromUDP(port int) (string, error) {
 	}
 	defer conn.Close()
 
-	fmt.Println("udp connect")
+	fmt.Println("radar udp connect")
 	buf := make([]byte, 4096)
 	n, err2 := conn.Read(buf)
 	if err2 != nil {
@@ -96,6 +101,23 @@ func GetInfoFromContent(content string) Info {
 	return info
 }
 
+func ThreadGetNetInfoFromUDP() {
+	go func() {
+		fmt.Println("radar udp receive thread")
+		for true {
+			time.Sleep(time.Duration(10) * time.Second) //10s sleep
+			content, err := GetContentFromUDP(20050)
+			if err == nil {
+				info := GetInfoFromContent(content)
+				if info.Ip != "" {
+					LocalInfo.Ip = info.Ip
+					LocalInfo.Port = info.Port
+				}
+			}
+		}
+	}()
+}
+
 func TestUDP() {
 	//content, err := radar.GetContentFromUDP(3000)
 	//if err != nil {
@@ -129,7 +151,7 @@ func Open(info Info) error {
 	if err1 != nil {
 		return err1
 	}
-	fmt.Println("tcp open")
+	fmt.Println("radar tcp open")
 	Client = conn
 	return nil
 }
