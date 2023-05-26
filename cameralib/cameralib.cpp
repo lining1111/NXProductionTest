@@ -7,7 +7,7 @@
 #include <vector>
 #include "cameralib.h"
 
-//#define x64
+#define x64
 
 #ifdef x64
 
